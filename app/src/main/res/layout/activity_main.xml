@@ -21,4 +21,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/creat_id_card"
         android:text="创建数字名片"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sky_box"
+        android:text="天空盒场景"/>
 </LinearLayout>

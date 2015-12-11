@@ -31,7 +31,7 @@ public class IDCardSurfaceView extends GLSurfaceView {
     private float mPreviousX;
     private float mPreviousDist;
 
-    int textureId;
+    int[] textureIds = new int[6];
 
     public IDCardSurfaceView(Context context) {
         super(context);
@@ -72,6 +72,15 @@ public class IDCardSurfaceView extends GLSurfaceView {
 
             mPreviousDist = getDist(e);
         }
+        else if(pointerCount == 3){
+            float dy = y - mPreviousY;
+            float dx = x - mPreviousX;
+            mRenderer.texRect.xShift += 0.01*dx;
+            mRenderer.texRect.yShift -= 0.01*dy;
+
+            mPreviousX = x;
+            mPreviousY = y;
+        }
             return true;
 
     }
@@ -90,13 +99,15 @@ public class IDCardSurfaceView extends GLSurfaceView {
         public void onDrawFrame(GL10 gl)
         {
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-            texRect.drawSelf(textureId);
+            int[] ids = new int[]{textureIds[0], textureIds[1], textureIds[1], textureIds[1],
+            textureIds[1], textureIds[1]};
+            texRect.drawSelf(ids);
         }
 
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             GLES20.glViewport(0, 0, width, height);
             float ratio = (float) width / height;
-            MatrixState.setProjectFrustum(-ratio, ratio, -1, 1, 1, 10);
+            MatrixState.setProjectFrustum(-ratio, ratio, -1, 1, 1, 5);
             MatrixState.setCamera(0,0,5,0f,0f,0f,0.0f,1.0f,0.0f);
 
         }
@@ -112,15 +123,15 @@ public class IDCardSurfaceView extends GLSurfaceView {
 
     public void initTexture()//textureId
     {
-        int[] textures = new int[1];
+        int[] textures = new int[2];
         GLES20.glGenTextures
                 (
-                        1,          //产生纹理的id数量
+                        2,          //产生纹理的id数量
                         textures,   //纹理id数组
                         0           //偏移量
                 );
-        textureId=textures[0];
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
+        textureIds[0] =textures[0];
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureIds[0]);
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_NEAREST);
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_LINEAR);
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S,GLES20.GL_CLAMP_TO_EDGE);
@@ -152,14 +163,36 @@ public class IDCardSurfaceView extends GLSurfaceView {
         canvas.drawText(gender, 450, 120, paint);
         canvas.drawText(position, 450, 180, paint);
         canvas.drawText(contact, 450, 240, paint);
+
+
+        Bitmap front = BitmapFactory.decodeResource(getResources(), R.drawable.card_front);
+
         //加载纹理进入显存
         GLUtils.texImage2D
                 (
                         GLES20.GL_TEXTURE_2D,   //纹理类型
                         0,                      //纹理层次，0代表直接贴图
-                        bmp,              //纹理图像
+                        front,              //纹理图像
                         0                      //纹理边框尺寸
                 );
+        front.recycle();
         bmp.recycle(); 		  //纹理加载成功后释放内存中的纹理图
+
+        textureIds[1] = textures[1];
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureIds[1]);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
+        Bitmap wall = BitmapFactory.decodeResource(getResources(), R.drawable.card_back);
+        GLUtils.texImage2D
+                (
+                        GLES20.GL_TEXTURE_2D,   //纹理类型
+                        0,                      //纹理层次，0代表直接贴图
+                        wall,              //纹理图像
+                        0                      //纹理边框尺寸
+                );
+        wall.recycle(); 		  //纹理加载成功后释放内存中的纹理图
     }
 }

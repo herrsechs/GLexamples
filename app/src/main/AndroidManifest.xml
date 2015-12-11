@@ -19,6 +19,7 @@
         <activity android:name=".glActivity.TextureTriangleActivity"/>
         <activity android:name=".glActivity.IDCardActivity"/>
         <activity android:name=".glActivity.CreateIDCardActivity"/>
+        <activity android:name=".glActivity.SkyBoxActivity"/>
     </application>
 
 </manifest>

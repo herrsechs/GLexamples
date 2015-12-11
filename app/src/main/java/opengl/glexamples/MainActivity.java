@@ -10,12 +10,14 @@ import android.widget.Button;
 
 import opengl.glexamples.glActivity.CreateIDCardActivity;
 import opengl.glexamples.glActivity.IDCardActivity;
+import opengl.glexamples.glActivity.SkyBoxActivity;
 import opengl.glexamples.glActivity.TextureTriangleActivity;
 
 public class MainActivity extends AppCompatActivity {
     Button textureTriangle;
     Button idcard;
     Button createIDCard;
+    Button skybox;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, CreateIDCardActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        skybox = (Button)findViewById(R.id.sky_box);
+        skybox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, SkyBoxActivity.class);
                 startActivity(intent);
             }
         });
