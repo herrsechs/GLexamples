@@ -48,7 +48,7 @@
             android:textSize="15sp"
             android:imeOptions="actionDone"
             android:focusableInTouchMode="true"
-            />
+            android:textColor="#1e1d24" />
 
     </RelativeLayout>
 
