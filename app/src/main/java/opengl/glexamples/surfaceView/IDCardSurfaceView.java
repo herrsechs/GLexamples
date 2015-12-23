@@ -21,6 +21,7 @@ import javax.microedition.khronos.opengles.GL10;
 import opengl.glexamples.R;
 import opengl.glexamples.glUtil.MatrixState;
 import opengl.glexamples.shape.IDCard;
+import opengl.glexamples.shape.TextureRect;
 import opengl.glexamples.shape.Triangle;
 
 /**
@@ -34,7 +35,7 @@ public class IDCardSurfaceView extends GLSurfaceView {
     private float mPreviousX;
     private float mPreviousDist;
 
-    int[] textureIds = new int[6];
+    int[] textureIds;
 
     public IDCardSurfaceView(Context context) {
         super(context);
@@ -42,6 +43,7 @@ public class IDCardSurfaceView extends GLSurfaceView {
         mRenderer = new SceneRenderer();
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        textureIds = new int[6];
     }
 
     @Override
@@ -123,6 +125,7 @@ public class IDCardSurfaceView extends GLSurfaceView {
     {
         IDCard texRect;
         IDCard[] texRects = new IDCard[6];
+        TextureRect wallPaper;
         public void onDrawFrame(GL10 gl)
         {
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
@@ -148,10 +151,10 @@ public class IDCardSurfaceView extends GLSurfaceView {
 
             texRect =new IDCard(IDCardSurfaceView.this);
             for(int i = 0; i < 6; i++){
-                texRects[i] = new IDCard(IDCardSurfaceView.this, 0, 0, 50*(i+1));
+                texRects[i] = new IDCard(IDCardSurfaceView.this, 0, 50*(i+1), 0);
             }
 
-
+            wallPaper = new TextureRect(IDCardSurfaceView.this);
             GLES20.glEnable(GLES20.GL_DEPTH_TEST);
             initTexture();
             GLES20.glDisable(GLES20.GL_CULL_FACE);
@@ -161,10 +164,10 @@ public class IDCardSurfaceView extends GLSurfaceView {
 
     public void initTexture()//textureId
     {
-        int[] textures = new int[2];
+        int[] textures = new int[3];
         GLES20.glGenTextures
                 (
-                        2,          //产生纹理的id数量
+                        3,          //产生纹理的id数量
                         textures,   //纹理id数组
                         0           //偏移量
                 );
@@ -238,5 +241,23 @@ public class IDCardSurfaceView extends GLSurfaceView {
                         0                      //纹理边框尺寸
                 );
         wall.recycle(); 		  //纹理加载成功后释放内存中的纹理图
+
+
+    }
+
+    private void bindTexture(int pos, Bitmap bmp){
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureIds[pos]);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
+        GLUtils.texImage2D
+                (
+                        GLES20.GL_TEXTURE_2D,   //纹理类型
+                        0,                      //纹理层次，0代表直接贴图
+                        bmp,              //纹理图像
+                        0                      //纹理边框尺寸
+                );
     }
 }
