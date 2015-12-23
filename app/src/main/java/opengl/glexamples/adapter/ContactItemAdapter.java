@@ -1,4 +1,4 @@
-package tongji.sse.namecard1.adapter;
+package opengl.glexamples.adapter;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import tongji.sse.namecard1.R;
+import opengl.glexamples.R;
 
 /**
  * Created by Angel on 15/12/16.
@@ -93,7 +93,7 @@ public class ContactItemAdapter extends RecyclerView.Adapter<ContactItemAdapter.
             }
             while(phones.moveToNext()) {
                 String email = emails.getString(emailIndex);
-                Log.i(TAG, email);
+                Log.i(TAG,email);
             }
         }
         cursor.close();
