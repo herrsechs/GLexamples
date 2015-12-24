@@ -19,6 +19,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.twotoasters.jazzylistview.effects.SlideInEffect;
+import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
+
 import java.util.ArrayList;
 
 import opengl.glexamples.R;
@@ -44,6 +47,9 @@ public class DisplayContactActivity extends Activity{
         contactRecyclerView = (RecyclerView)findViewById(R.id.contact_recycler_view);
         contactRecyclerView.setLayoutManager(linearLayoutManager);
         contactRecyclerView.setAdapter(new ContactItemAdapter(this, usernames));
+        contactRecyclerView.setOnScrollListener(new JazzyRecyclerViewScrollListener());
+        //contactRecyclerView.setTransitionEffect(new SlideInEffect());
+
 
         inputSearchQuery=(EditText)findViewById(R.id.input_search_query);
         inputSearchQuery.addTextChangedListener(new TextWatcher() {
