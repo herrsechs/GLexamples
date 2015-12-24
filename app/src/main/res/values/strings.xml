@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="button_getContact">Get Contact</string>
+    title_activity_display_message
+    <string name="title_activity_display_message">Display Contact</string>
+    <string name="searchTxt">Search...</string>
 </resources>

@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import opengl.glexamples.glActivity.DisplayContactActivity;
 import opengl.glexamples.glActivity.CreateIDCardActivity;
 import opengl.glexamples.glActivity.IDCardActivity;
 import opengl.glexamples.glActivity.SkyBoxActivity;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     Button idcard;
     Button createIDCard;
     Button skybox;
+    Button contactList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, SkyBoxActivity.class);
+                startActivity(intent);
+            }
+        });
+        contactList=(Button)findViewById(R.id.contact_list);
+        contactList.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.setClass(MainActivity.this, DisplayContactActivity.class);
                 startActivity(intent);
             }
         });

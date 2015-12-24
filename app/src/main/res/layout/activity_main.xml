@@ -26,4 +26,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/sky_box"
         android:text="天空盒场景"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_list"
+        android:text="联系人"/>
 </LinearLayout>
