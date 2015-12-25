@@ -7,10 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
-import opengl.glexamples.glActivity.DisplayContactActivity;
 import opengl.glexamples.glActivity.CreateIDCardActivity;
 import opengl.glexamples.glActivity.IDCardActivity;
+import opengl.glexamples.glActivity.MenuActivity;
 import opengl.glexamples.glActivity.SkyBoxActivity;
 import opengl.glexamples.glActivity.TextureTriangleActivity;
 
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent();
-                intent.setClass(MainActivity.this, DisplayContactActivity.class);
+                intent.setClass(MainActivity.this,MenuActivity.class);
                 startActivity(intent);
             }
         });

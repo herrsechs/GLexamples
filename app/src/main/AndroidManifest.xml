@@ -22,7 +22,14 @@
         <activity android:name=".glActivity.IDCardActivity"/>
         <activity android:name=".glActivity.CreateIDCardActivity"/>
         <activity android:name=".glActivity.SkyBoxActivity"/>
-        <activity android:name=".glActivity.DisplayContactActivity"/>
+        <activity android:name=".glActivity.MenuActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 

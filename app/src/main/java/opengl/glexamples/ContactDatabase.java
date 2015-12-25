@@ -21,12 +21,12 @@ public class ContactDatabase {
                             SQLiteDatabase.CREATE_IF_NECESSARY
             );
 
-            String sql = "create table if not exists contacts" +
+            String sql = "create table if not exists contact" +
                     "( `id` VARCHAR(45) NOT NULL,\n" +
                     "  `name` VARCHAR(45) NOT NULL,\n" +
                     "  `phone` VARCHAR(45) NOT NULL,\n" +
                     "  `email` VARCHAR(45) NULL,\n" +
-                    "  `group` INT NOT NULL DEFAULT 0,\n" +
+                    "  `group` VARCHAR(45) NOT NULL,\n" +
                     "  `DATA1` VARCHAR(45) NULL,\n" +
                     "  `DATA2` VARCHAR(45) NULL,\n" +
                     "  `DATA3` VARCHAR(45) NULL,\n" +
@@ -47,9 +47,9 @@ public class ContactDatabase {
         }
     }
 
-    public void insert(String id,String name,String phone,String email,int group) {
+    public void insert(String id,String name,String phone,String email) {
         try {
-            String sql="insert into contacts values (?,?,?,?,0,null,null,null,null,null)";
+            String sql="insert into contact values (?,?,?,?,'1',null,null,null,null,null)";
             sld.execSQL(sql, new String[]{id, name, phone, email});
 
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class ContactDatabase {
 
     public void delete() {
         try {
-            String sql = "delete from contacts;";
+            String sql = "delete from contact;";
             sld.execSQL(sql);
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,9 +68,8 @@ public class ContactDatabase {
 
     public void update() {
         try {
-            String sql = "UPDATE contacts\n" +
-                    "SET group = 1\n" +
-                    "WHERE name='安俊平';";
+            //TODO:update fail to execute.
+            String sql = "update contact set group='2' where id='1';";
             sld.execSQL(sql);
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,13 +77,13 @@ public class ContactDatabase {
     }
 
     public int getCount(){
-        Cursor cursor=sld.rawQuery("select id from contacts",null);
+        Cursor cursor=sld.rawQuery("select id from contact",null);
         return cursor.getCount();
     }
 
     public ArrayList<String> getAllNames(){
         ArrayList<String> names=new ArrayList<>();
-        Cursor cursor=sld.rawQuery("select name from contacts",null);
+        Cursor cursor=sld.rawQuery("select name from contact",null);
         while (cursor.moveToNext()){
             String name=cursor.getString(0);
             names.add(name);
@@ -94,7 +93,7 @@ public class ContactDatabase {
 
     public int findUserByName(String name){
         int idx=-1;
-        Cursor cursor=sld.rawQuery("select * from contacts where name=?",new String[]{name});
+        Cursor cursor=sld.rawQuery("select * from contact where name=?",new String[]{name});
         if(cursor.moveToNext()){
             idx=Integer.parseInt(cursor.getString(0));
         }
@@ -102,6 +101,22 @@ public class ContactDatabase {
         return idx;
     }
 
+    public ArrayList<String> findUserByGroup(String group){
+        if(group.equals("0")) return getAllNames();
+
+        ArrayList<String> usernames=new ArrayList<>();
+        String name;
+        Cursor cursor=sld.rawQuery("select * from contact",null);
+        while(cursor.moveToNext()){
+            if(cursor.getString(4).equals(group)) {
+                name = cursor.getString(1);
+                usernames.add(name);
+            }
+        }
+
+        //sld.rawQuery("select name from contact where group=?",new String[]{group} );
+        return usernames;
+    }
 
 }
 

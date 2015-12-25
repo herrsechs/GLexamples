@@ -33,5 +33,9 @@
     </style>
     <style name="ActionBarProgressBar" parent="@android:style/Widget.ProgressBar.Small">
     </style>
+    <style name="fragment_text">
+        <item name="android:textColor">#ffacacac</item>
+        <item name="android:textSize">25sp</item>
+    </style>
 
 </resources>
