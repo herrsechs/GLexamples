@@ -21,7 +21,6 @@ public class IDCardActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         mGLSurfaceView = new IDCardSurfaceView(this);
         setContentView(mGLSurfaceView);

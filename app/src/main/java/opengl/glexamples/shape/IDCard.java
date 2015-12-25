@@ -1,6 +1,7 @@
 package opengl.glexamples.shape;
 
 import android.opengl.GLES20;
+import android.view.SurfaceView;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -28,88 +29,145 @@ public class IDCard {
     FloatBuffer[] mVertexBuffer = new FloatBuffer[6];
     FloatBuffer[] mTextCoorBuffer = new FloatBuffer[6];
 
-    public float xAngle=0;
-    public float yAngle=0;
-    public float zAngle=0;
-    public float xShift=0;
-    public float yShift=0;
-    public float scale =1;
+    public float xAngle =0;
+    public float yAngle =0;
+    public float zAngle =0;
+    public float xShift =0;
+    public float yShift =0;
+    public float zShift =0;
+    public float scale  =1;
+    //The coordinate of ID card's center
+    public float centerX=0;
+    public float centerY=0;
+    public float centerZ=0;
 
-    public IDCard(IDCardSurfaceView sv){
+    private float originX=0;
+    private float originY=0;
+    private float originZ=0;
+
+
+    /**
+     * If IDCard is in the center of screen, it's highlighted
+    */
+    private boolean highlighted = false;
+
+
+    public IDCard(SurfaceView sv){
         initShader(sv);
-        initVertexData();
+        initVertexData(0,0,0);
     }
 
+    public IDCard(SurfaceView sv, int initX, int initY, int initZ){
+        initShader(sv);
+        initVertexData(initX, initY, initZ);
+    }
 
-    public void initVertexData(){
+    final float UNIT = 0.05f;
+    float[] left_up_front_v    = new float[]{ 40 * UNIT, -20 * UNIT,  UNIT};
+    float[] right_up_front_v   = new float[]{-40 * UNIT, -20 * UNIT,  UNIT};
+    float[] right_down_front_v = new float[]{-40 * UNIT,  20 * UNIT,  UNIT};
+    float[] left_down_front_v  = new float[]{ 40 * UNIT,  20 * UNIT,  UNIT};
+    float[] left_up_back_v     = new float[]{ 40 * UNIT, -20 * UNIT, -UNIT};
+    float[] right_up_back_v    = new float[]{-40 * UNIT, -20 * UNIT, -UNIT};
+    float[] right_down_back_v  = new float[]{-40 * UNIT,  20 * UNIT, -UNIT};
+    float[] left_down_back_v   = new float[]{ 40 * UNIT,  20 * UNIT, -UNIT};
+
+    float[] vertices1 = new float[]{
+            /**
+             * Front
+             */
+            left_up_front_v[0],    left_up_front_v[1],    left_up_front_v[2],
+            right_up_front_v[0],   right_up_front_v[1],   right_up_front_v[2],
+            right_down_front_v[0], right_down_front_v[1], right_down_front_v[2],
+            right_down_front_v[0], right_down_front_v[1], right_down_front_v[2],
+            left_down_front_v[0],  left_down_front_v[1],  left_down_front_v[2],
+            left_up_front_v[0],    left_up_front_v[1],    left_up_front_v[2],
+    };
+    float[] vertices2 = new float[]{
+            /**
+             * Back
+             */
+            left_up_back_v[0],     left_up_back_v[1],     left_up_back_v[2],
+            right_up_back_v[0],    right_up_back_v[1],    right_up_back_v[2],
+            right_down_back_v[0],  right_down_back_v[1],  right_down_back_v[2],
+            right_down_back_v[0],  right_down_back_v[1],  right_down_back_v[2],
+            left_down_back_v[0],   left_down_back_v[1],   left_down_back_v[2],
+            left_up_back_v[0],     left_up_back_v[1],     left_up_back_v[2],
+    };
+    float[] vertices3 = new float[]{
+            /**
+             * Left
+             */
+            left_up_front_v[0],    left_up_front_v[1],    left_up_front_v[2],
+            left_up_back_v[0],     left_up_back_v[1],     left_up_back_v[2],
+            left_down_front_v[0],  left_down_front_v[1],  left_down_front_v[2],
+            left_down_front_v[0],  left_down_front_v[1],  left_down_front_v[2],
+            left_down_back_v[0],   left_down_back_v[1],   left_down_back_v[2],
+            left_up_back_v[0],     left_up_back_v[1],     left_up_back_v[2],
+    };
+    float[] vertices4 = new float[]{
+            /**
+             * Right
+             */
+            right_up_back_v[0],    right_up_back_v[1],    right_up_back_v[2],
+            right_up_back_v[0],    right_up_back_v[1],    right_up_back_v[2],
+            right_down_front_v[0], right_down_front_v[1], right_down_front_v[2],
+            right_down_front_v[0], right_down_front_v[1], right_down_front_v[2],
+            right_down_back_v[0],  right_down_back_v[1],  right_down_back_v[2],
+            right_up_back_v[0],    right_up_back_v[1],    right_up_back_v[2],
+    };
+    float[] vertices5 = new float[]{
+            /**
+             * Up
+             */
+            right_up_front_v[0],   right_up_front_v[1],   right_up_front_v[2],
+            right_up_back_v[0],    right_up_back_v[1],    right_up_back_v[2],
+            left_up_front_v[0],    left_up_front_v[1],    left_up_front_v[2],
+            left_up_front_v[0],    left_up_front_v[1],    left_up_front_v[2],
+            left_up_back_v[0],     left_up_back_v[1],     left_up_back_v[2],
+            right_up_back_v[0],    right_up_back_v[1],    right_up_back_v[2],
+    };
+    float[] vertices6 = new float[]{
+            /**
+             * Down
+             */
+            right_down_front_v[0], right_down_front_v[1], right_down_front_v[2],
+            right_down_back_v[0],  right_down_back_v[1],  right_down_back_v[2],
+            left_down_front_v[0],  left_down_front_v[1],  left_down_front_v[2],
+            left_down_front_v[0],  left_down_front_v[1],  left_down_front_v[2],
+            left_down_back_v[0],   left_down_back_v[1],   left_down_back_v[2],
+            right_down_back_v[0],  right_down_back_v[1],  right_down_back_v[2],
+    };
+
+    public void initVertexData(int initX, int initY, int initZ){
         vCount = 36;
-        final float UNIT = 0.05f;
-        float[] vertices1 = new float[]{
-                /**
-                 * Front
-                 */
-                -40 * UNIT, 20 * UNIT, UNIT,
-                40 * UNIT, 20 * UNIT, UNIT,
-                40 * UNIT, -20 * UNIT, UNIT,
-                40 * UNIT, -20 * UNIT, UNIT,
-                -40 * UNIT, -20 * UNIT, UNIT,
-                -40 * UNIT, 20 * UNIT, UNIT,
-        };
-        float[] vertices2 = new float[]{
-                /**
-                 * Back
-                 */
-                -40 * UNIT, 20 * UNIT, -UNIT,
-                40 * UNIT, 20 * UNIT, -UNIT,
-                40 * UNIT, -20 * UNIT, -UNIT,
-                40 * UNIT, -20 * UNIT, -UNIT,
-                -40 * UNIT, -20 * UNIT, -UNIT,
-                -40 * UNIT, 20 * UNIT, -UNIT,
-        };
-        float[] vertices3 = new float[]{
-                /**
-                 * Left
-                 */
-                -40 * UNIT, 20 * UNIT, UNIT,
-                -40 * UNIT, 20 * UNIT, -UNIT,
-                -40 * UNIT, -20 * UNIT, UNIT,
-                -40 * UNIT, -20 * UNIT, UNIT,
-                -40 * UNIT, -20 * UNIT, -UNIT,
-                -40 * UNIT, 20 * UNIT, -UNIT,
-        };
-        float[] vertices4 = new float[]{
-                /**
-                 * Right
-                 */
-                40 * UNIT, 20 * UNIT, UNIT,
-                40 * UNIT, 20 * UNIT, -UNIT,
-                40 * UNIT, -20 * UNIT, UNIT,
-                40 * UNIT, -20 * UNIT, UNIT,
-                40 * UNIT, -20 * UNIT, -UNIT,
-                40 * UNIT, 20 * UNIT, -UNIT,
-        };
-        float[] vertices5 = new float[]{
-                /**
-                 * Up
-                 */
-                40 * UNIT, 20 * UNIT, UNIT,
-                40 * UNIT, 20 * UNIT, -UNIT,
-                -40 * UNIT, 20 * UNIT, UNIT,
-                -40 * UNIT, 20 * UNIT, UNIT,
-                -40 * UNIT, 20 * UNIT, -UNIT,
-                40 * UNIT, 20 * UNIT, -UNIT,
-        };
-        float[] vertices6 = new float[]{
-                /**
-                 * Down
-                 */
-                40*UNIT, -20*UNIT, UNIT,
-                40*UNIT, -20*UNIT, -UNIT,
-                -40*UNIT, -20*UNIT, UNIT,
-                -40*UNIT, -20*UNIT, UNIT,
-                -40*UNIT, -20*UNIT, -UNIT,
-                40*UNIT, -20*UNIT, -UNIT,
-        };
+
+
+
+        this.originZ = (float)0.5 * (left_up_front_v[2] + UNIT*initZ*2 + left_up_back_v[2])    + this.zShift;
+        this.originY = (float)0.5 * (left_up_front_v[1] + UNIT*initY*2 + right_up_front_v[1])  + this.yShift;
+        this.originX = (float)0.5 * (left_up_front_v[0] + UNIT*initX*2 + left_down_front_v[0]) + this.xShift;
+
+        for(int i = 0; i < 6; i++){
+            vertices1[i*3]   += UNIT * initX;
+            vertices1[i*3+1] += UNIT * initY;
+            vertices1[i*3+2] += UNIT * initZ;
+            vertices2[i*3]   += UNIT * initX;
+            vertices2[i*3+1] += UNIT * initY;
+            vertices2[i*3+2] += UNIT * initZ;
+            vertices3[i*3]   += UNIT * initX;
+            vertices3[i*3+1] += UNIT * initY;
+            vertices3[i*3+2] += UNIT * initZ;
+            vertices4[i*3]   += UNIT * initX;
+            vertices4[i*3+1] += UNIT * initY;
+            vertices4[i*3+2] += UNIT * initZ;
+            vertices5[i*3]   += UNIT * initX;
+            vertices5[i*3+1] += UNIT * initY;
+            vertices5[i*3+2] += UNIT * initZ;
+            vertices6[i*3]   += UNIT * initX;
+            vertices6[i*3+1] += UNIT * initY;
+            vertices6[i*3+2] += UNIT * initZ;
+        }
 
         loadVertexBuffer(0, vertices1);
         loadVertexBuffer(1, vertices2);
@@ -133,12 +191,12 @@ public class IDCard {
                 /**
                  * Back
                  */
-                0, 0,
-                1, 0,
-                1, 1,
                 1, 1,
                 0, 1,
                 0, 0,
+                0, 0,
+                1, 0,
+                1, 1,
         };
         float[] textCoor3 = new float[]{
                 /**
@@ -209,7 +267,7 @@ public class IDCard {
         mTextCoorBuffer[pos].position(0);
     }
 
-    public void initShader(IDCardSurfaceView mv)
+    public void initShader(SurfaceView mv)
     {
         mVertexShader= ShaderUtil.loadFromAssetsFile("tri_texture_vertex.sh", mv.getResources());
         mFragmentShader=ShaderUtil.loadFromAssetsFile("tri_texture_frag.sh", mv.getResources());
@@ -224,8 +282,35 @@ public class IDCard {
 
         MatrixState.setInitStack();
 
+        this.centerX = this.xShift + this.originX;
+        this.centerY = this.yShift + this.originY;
+        this.centerZ = this.zShift + this.originZ;
 
-        MatrixState.translate(xShift, yShift, 1);
+        if(this.centerY < -0.5 && this.centerY > -1.5) {
+            this.highlighted = true;
+        }
+        else {
+            this.highlighted = false;
+        }
+
+        if(this.highlighted) {
+            this.zShift = 30 * UNIT;
+            //this.xAngle = -90;
+            //this.yShift = -this.originZ;
+            //if(this.justGotHighlight)
+                //this.beforeHighlightedZ = this.zShift;
+                //this.zShift = 0;
+
+        }
+        else {
+            this.zShift = 0;
+            //this.xAngle = 0;
+            //this.yShift = 0;
+            //if(this.justLostHighlight)
+               // this.zShift = -this.originZ;
+        }
+
+        MatrixState.translate(xShift, yShift, zShift);
         MatrixState.rotate(yAngle, 0, 1, 0);
         MatrixState.rotate(zAngle, 0, 0, 1);
         MatrixState.rotate(xAngle, 1, 0, 0);

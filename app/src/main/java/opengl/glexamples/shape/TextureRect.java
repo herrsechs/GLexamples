@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import android.opengl.GLES20;
+import android.view.SurfaceView;
 
 import opengl.glexamples.glUtil.MatrixState;
 import opengl.glexamples.glUtil.ShaderUtil;
@@ -24,7 +25,7 @@ public class TextureRect
 	FloatBuffer   mTexCoorBuffer;
     int vCount=0;   
     
-    public TextureRect(SkyBoxSurfaceView mv)
+    public TextureRect(SurfaceView mv)
     {    	
     	initVertexData();
     	initShader(mv);
@@ -65,7 +66,7 @@ public class TextureRect
     }
 
 
-    public void initShader(SkyBoxSurfaceView mv)
+    public void initShader(SurfaceView mv)
     {
 
         mVertexShader= ShaderUtil.loadFromAssetsFile("vertex_tex.sh", mv.getResources());
