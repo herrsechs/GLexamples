@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.twotoasters.jazzylistview.JazzyListView;
 import com.twotoasters.jazzylistview.effects.FanEffect;
+import com.twotoasters.jazzylistview.effects.FlyEffect;
 
 import java.util.ArrayList;
 

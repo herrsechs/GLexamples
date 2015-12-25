@@ -2,6 +2,7 @@ package opengl.glexamples.glActivity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -84,7 +85,9 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         findViewById(R.id.title_bar_right_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
+                Intent intent=new Intent();
+                intent.setClass(mContext,EditProfileActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -130,7 +133,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 
     public void synContactdb(Context context){
         //
-        contactdb.delete();
+        //contactdb.delete();
         //contactdb.update();
 
         int contactIdIndex=0;

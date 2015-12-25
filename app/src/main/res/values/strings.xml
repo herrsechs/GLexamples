@@ -7,4 +7,5 @@
     title_activity_display_message
     <string name="title_activity_display_message">Display Contact</string>
     <string name="searchTxt">Search...</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
 </resources>

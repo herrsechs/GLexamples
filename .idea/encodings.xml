@@ -8,10 +8,8 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/title_bar_menu_on.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/titlebar_menu_selector.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/contact.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/home.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/edit_profile.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/main.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/profile.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/settings.xml" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
