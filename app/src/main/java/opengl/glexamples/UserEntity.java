@@ -1,9 +1,12 @@
 package opengl.glexamples;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Angel on 15/12/26.
  */
-public class UserEntity {
+public class UserEntity implements Parcelable{
     private String name;
     private String phone;
     private String email;
@@ -47,5 +50,39 @@ public class UserEntity {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(phone);
+        dest.writeString(email);
+        dest.writeString(group);
+    }
+
+
+
+    public static final Parcelable.Creator<UserEntity> CREATOR
+            = new Parcelable.Creator<UserEntity>() {
+        public UserEntity createFromParcel(Parcel in) {
+            return new UserEntity(in);
+        }
+
+        public UserEntity[] newArray(int size) {
+            return new UserEntity[size];
+        }
+    };
+
+    private UserEntity(Parcel in) {
+        name = in.readString();
+        phone=in.readString();
+        email=in.readString();
+        group=in.readString();
     }
 }

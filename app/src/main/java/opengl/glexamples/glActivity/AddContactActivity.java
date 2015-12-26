@@ -2,14 +2,13 @@ package opengl.glexamples.glActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,7 +20,7 @@ import opengl.glexamples.ContactDatabase;
 import opengl.glexamples.R;
 import opengl.glexamples.UserEntity;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class AddContactActivity extends AppCompatActivity {
     private Context context;
     private EditText name;
     private EditText phone;
@@ -41,6 +40,9 @@ public class EditProfileActivity extends AppCompatActivity {
         context=this;
         user=new UserEntity();
         contactdb=new ContactDatabase();
+
+        Intent intent=getIntent();
+        intent.getExtras();
         initView();
     }
 

@@ -32,7 +32,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".glActivity.EditProfileActivity"
+            android:name=".glActivity.EditContactActivity"
+            android:label="@string/title_activity_edit_profile" >
+        </activity>
+        <activity
+            android:name=".glActivity.AddContactActivity"
             android:label="@string/title_activity_edit_profile" >
         </activity>
     </application>

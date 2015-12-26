@@ -29,6 +29,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     ResideMenuItem itemFamily;
     ResideMenuItem itemClassmate;
 
+
     /**
      * Called when the activity is first created.
      */
@@ -51,9 +52,9 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         resideMenu.setUse3D(true);
         resideMenu.setBackground(R.drawable.menu_background);
         resideMenu.attachToActivity(this);
-        //resideMenu.setMenuListener(menuListener);
-        //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
-        resideMenu.setScaleValue(0.6f);
+        resideMenu.setDirectionDisable(ResideMenu.DIRECTION_RIGHT);
+        resideMenu.setDirectionDisable(ResideMenu.DIRECTION_LEFT);
+        resideMenu.setScaleValue(1.0f);
 
         //create menu items
         itemDefault=new ResideMenuItem(mContext,R.drawable.icon_home,"默 认");
@@ -86,7 +87,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent();
-                intent.setClass(mContext,EditProfileActivity.class);
+                intent.setClass(mContext,AddContactActivity.class);
                 startActivity(intent);
             }
         });
@@ -96,7 +97,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        return resideMenu.dispatchTouchEvent(ev);
+            return resideMenu.dispatchTouchEvent(ev);
     }
 
     @Override

@@ -57,10 +57,11 @@ public class ContactDatabase {
         }
     }
 
-    public void delete() {
+    public void delete(Integer position) {
         try {
-            String sql = "delete from contact;";
+            String sql = "delete from contact where id="+position.toString();
             sld.execSQL(sql);
+//            sld.delete("contact","id",new String[]{position.toString()});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,6 +102,22 @@ public class ContactDatabase {
         return idx;
     }
 
+    public UserEntity findUserById(String id){
+        UserEntity user;
+        Cursor cursor=sld.rawQuery("select * from contact where id=?",new String[]{id});
+        if(cursor.moveToNext()){
+            String name=cursor.getString(0);
+            String phone=cursor.getString(1);
+            String email=cursor.getString(2);
+            String group=cursor.getString(3);
+
+            user=new UserEntity(name,phone,email,group);
+        }else{
+            user=new UserEntity();
+        }
+
+        return user;
+    }
     public ArrayList<String> findUserByGroup(String group){
         if(group.equals("0")) return getAllNames();
 
