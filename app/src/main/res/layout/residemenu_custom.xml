@@ -6,7 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:background="@drawable/starrysky"
         android:scaleType="centerCrop" />
 
     <ImageView
@@ -20,7 +19,7 @@
         android:id="@+id/sv_menu_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        
+
     </RelativeLayout>
 
 </merge>
