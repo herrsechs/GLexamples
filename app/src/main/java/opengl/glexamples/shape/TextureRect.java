@@ -9,7 +9,7 @@ import android.view.SurfaceView;
 
 import opengl.glexamples.glUtil.MatrixState;
 import opengl.glexamples.glUtil.ShaderUtil;
-import opengl.glexamples.surfaceView.SkyBoxSurfaceView;
+
 import static opengl.glexamples.glUtil.ShaderUtil.createProgram;
 //�������
 public class TextureRect 
@@ -20,7 +20,7 @@ public class TextureRect
     int maTexCoorHandle;
     String mVertexShader;
     String mFragmentShader;
-	static final float UNIT_SIZE = 0.05f;
+	static final float UNIT_SIZE = 2f;
 	FloatBuffer   mVertexBuffer;
 	FloatBuffer   mTexCoorBuffer;
     int vCount=0;   
@@ -37,13 +37,13 @@ public class TextureRect
        
         float vertices[]=new float[]
         {
-        	-UNIT_SIZE,UNIT_SIZE,0,
-        	-UNIT_SIZE,-UNIT_SIZE,0,
-        	UNIT_SIZE,-UNIT_SIZE,0,
+        	-UNIT_SIZE*2.5f,UNIT_SIZE*5,-2,
+        	-UNIT_SIZE*2.5f,-UNIT_SIZE*5,-2,
+        	UNIT_SIZE*2.5f,-UNIT_SIZE*5,-2,
         	  
-        	UNIT_SIZE,-UNIT_SIZE,0,
-        	UNIT_SIZE,UNIT_SIZE,0,
-        	-UNIT_SIZE,UNIT_SIZE,0
+        	UNIT_SIZE*2.5f,-UNIT_SIZE*5,-2,
+        	UNIT_SIZE*2.5f,UNIT_SIZE*5,-2,
+        	-UNIT_SIZE*2.5f,UNIT_SIZE*5,-2
         };
 		
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);

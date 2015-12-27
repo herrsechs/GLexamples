@@ -80,8 +80,8 @@ public class IDCardSurfaceView extends GLSurfaceView {
                         int num = 0;
                         for(IDCard i : mRenderer.texRects){
                             num++;
-                            i.yShift += dy * 0.01;
-                            Log.d("Card" + num, "X: " + i.centerX + " Y: " + i.centerY + " Z: " + i.centerZ);
+                            i.yShift = dy * 0.01f;
+                            //Log.d("Card" + num, "X: " + i.centerX + " Y: " + i.centerY + " Z: " + i.centerZ);
 
                         }
                         //Log.d("zShift", 0.01*dy + "");
@@ -132,9 +132,12 @@ public class IDCardSurfaceView extends GLSurfaceView {
             int[] ids = new int[]{textureIds[0], textureIds[1], textureIds[1], textureIds[1],
             textureIds[1], textureIds[1]};
             texRect.drawSelf(ids);
+
             for(IDCard i : texRects){
                 i.drawSelf(ids);
             }
+
+            wallPaper.drawSelf(textureIds[2]);
 
         }
 
@@ -172,20 +175,7 @@ public class IDCardSurfaceView extends GLSurfaceView {
                         0           //偏移量
                 );
         textureIds[0] =textures[0];
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureIds[0]);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_NEAREST);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_LINEAR);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S,GLES20.GL_CLAMP_TO_EDGE);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T,GLES20.GL_CLAMP_TO_EDGE);
-        /*
-        Bitmap bitmapTmp = BitmapFactory.decodeResource(this.getResources(), R.drawable.wall);
-        Bitmap bmp = Bitmap.createBitmap(800, 400, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bmp);
-        Paint paint = new Paint();
-        //Drawable doge = getResources().getDrawable(R.drawable.doge, null);
-        Bitmap doge = BitmapFactory.decodeResource(getResources(), R.drawable.doge);
-        canvas.drawBitmap(doge, 0, 0, paint);
-        */
+
         Bitmap bmp = Bitmap.createBitmap(1200, 600, Bitmap.Config.ARGB_8888);
         Bitmap front = BitmapFactory.decodeResource(getResources(), R.drawable.card_front);
 
@@ -215,34 +205,19 @@ public class IDCardSurfaceView extends GLSurfaceView {
 
         canvas.drawBitmap(bmp, null, rect, paint);
         //加载纹理进入显存
-        GLUtils.texImage2D
-                (
-                        GLES20.GL_TEXTURE_2D,   //纹理类型
-                        0,                      //纹理层次，0代表直接贴图
-                        bmp,              //纹理图像
-                        0                      //纹理边框尺寸
-                );
+        bindTexture(0, bmp);
         front.recycle();
         bmp.recycle(); 		  //纹理加载成功后释放内存中的纹理图
 
         textureIds[1] = textures[1];
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureIds[1]);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
-
         Bitmap wall = BitmapFactory.decodeResource(getResources(), R.drawable.card_back);
-        GLUtils.texImage2D
-                (
-                        GLES20.GL_TEXTURE_2D,   //纹理类型
-                        0,                      //纹理层次，0代表直接贴图
-                        wall,              //纹理图像
-                        0                      //纹理边框尺寸
-                );
+        bindTexture(1, wall);
         wall.recycle(); 		  //纹理加载成功后释放内存中的纹理图
 
-
+        textureIds[2] = textures[2];
+        Bitmap wallpaper = BitmapFactory.decodeResource(getResources(), R.drawable.starrysky);
+        bindTexture(2, wallpaper);
+        wallpaper.recycle();
     }
 
     private void bindTexture(int pos, Bitmap bmp){

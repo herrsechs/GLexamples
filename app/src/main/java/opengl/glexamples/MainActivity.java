@@ -11,7 +11,7 @@ import android.widget.Button;
 import opengl.glexamples.glActivity.DisplayContactActivity;
 import opengl.glexamples.glActivity.CreateIDCardActivity;
 import opengl.glexamples.glActivity.IDCardActivity;
-import opengl.glexamples.glActivity.SkyBoxActivity;
+import opengl.glexamples.glActivity.ParticleSystemActivity;
 import opengl.glexamples.glActivity.TextureTriangleActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this, SkyBoxActivity.class);
+                intent.setClass(MainActivity.this, ParticleSystemActivity.class);
                 startActivity(intent);
             }
         });

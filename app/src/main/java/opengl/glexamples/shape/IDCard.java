@@ -144,9 +144,9 @@ public class IDCard {
 
 
 
-        this.originZ = (float)0.5 * (left_up_front_v[2] + UNIT*initZ*2 + left_up_back_v[2])    + this.zShift;
-        this.originY = (float)0.5 * (left_up_front_v[1] + UNIT*initY*2 + right_up_front_v[1])  + this.yShift;
-        this.originX = (float)0.5 * (left_up_front_v[0] + UNIT*initX*2 + left_down_front_v[0]) + this.xShift;
+        this.centerZ = (float)0.5 * (left_up_front_v[2] + UNIT*initZ*2 + left_up_back_v[2])    + this.zShift;
+        this.centerY = (float)0.5 * (left_up_front_v[1] + UNIT*initY*2 + right_up_front_v[1])  + this.yShift;
+        this.centerX = (float)0.5 * (left_up_front_v[0] + UNIT*initX*2 + left_down_front_v[0]) + this.xShift;
 
         for(int i = 0; i < 6; i++){
             vertices1[i*3]   += UNIT * initX;
@@ -282,35 +282,27 @@ public class IDCard {
 
         MatrixState.setInitStack();
 
-        this.centerX = this.xShift + this.originX;
-        this.centerY = this.yShift + this.originY;
-        this.centerZ = this.zShift + this.originZ;
+        this.centerX += this.xShift;
+        this.centerY += this.yShift;
+        this.centerZ += this.zShift;
 
-        if(this.centerY < -0.5 && this.centerY > -1.5) {
+        if(this.centerY < -0.75 && this.centerY > -1.25 && !this.highlighted) {
             this.highlighted = true;
-        }
-        else {
-            this.highlighted = false;
-        }
-
-        if(this.highlighted) {
             this.zShift = 30 * UNIT;
-            //this.xAngle = -90;
-            //this.yShift = -this.originZ;
-            //if(this.justGotHighlight)
-                //this.beforeHighlightedZ = this.zShift;
-                //this.zShift = 0;
+        }
+        else if(this.centerY > -0.5 || this.centerY < -1.5){
+            if(this.highlighted)
+                this.zShift = -30 *UNIT;
+            this.highlighted = false;
 
         }
-        else {
-            this.zShift = 0;
-            //this.xAngle = 0;
-            //this.yShift = 0;
-            //if(this.justLostHighlight)
-               // this.zShift = -this.originZ;
-        }
 
-        MatrixState.translate(xShift, yShift, zShift);
+
+
+        this.translate(xShift, yShift, zShift);
+        this.xShift = 0;
+        this.yShift = 0;
+        this.zShift = 0;
         MatrixState.rotate(yAngle, 0, 1, 0);
         MatrixState.rotate(zAngle, 0, 0, 1);
         MatrixState.rotate(xAngle, 1, 0, 0);
@@ -347,5 +339,38 @@ public class IDCard {
         for(int i = 0; i < 6; i++){
             drawFace(i, texIds[i]);
         }
+    }
+
+    private void translate(float x, float y, float z){
+        x = -x;
+        y = -y;
+        z = -z;
+        for(int i = 0; i < 6; i++){
+            vertices1[i*3]   -= x;
+            vertices1[i*3+1] -= y;
+            vertices1[i*3+2] -= z;
+            vertices2[i*3]   -= x;
+            vertices2[i*3+1] -= y;
+            vertices2[i*3+2] -= z;
+            vertices3[i*3]   -= x;
+            vertices3[i*3+1] -= y;
+            vertices3[i*3+2] -= z;
+            vertices4[i*3]   -= x;
+            vertices4[i*3+1] -= y;
+            vertices4[i*3+2] -= z;
+            vertices5[i*3]   -= x;
+            vertices5[i*3+1] -= y;
+            vertices5[i*3+2] -= z;
+            vertices6[i*3]   -= x;
+            vertices6[i*3+1] -= y;
+            vertices6[i*3+2] -= z;
+        }
+
+        loadVertexBuffer(0, vertices1);
+        loadVertexBuffer(1, vertices2);
+        loadVertexBuffer(2, vertices3);
+        loadVertexBuffer(3, vertices4);
+        loadVertexBuffer(4, vertices5);
+        loadVertexBuffer(5, vertices6);
     }
 }

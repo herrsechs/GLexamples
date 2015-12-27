@@ -6,13 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import opengl.glexamples.surfaceView.SkyBoxSurfaceView;
+import opengl.glexamples.surfaceView.ParticleSystemSurfaceView;
 
 /**
  * Created by LLLLLyj on 2015/10/26.
  */
-public class SkyBoxActivity extends AppCompatActivity {
-    private SkyBoxSurfaceView mGLSurfaceView;
+public class ParticleSystemActivity extends AppCompatActivity {
+    private ParticleSystemSurfaceView mGLSurfaceView;
     protected void onCreate(Bundle savedInstanceState)
     {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -21,25 +21,13 @@ public class SkyBoxActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //设置为横屏模式
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         //初始化GLSurfaceView
-        mGLSurfaceView = new SkyBoxSurfaceView(this);
+        mGLSurfaceView = new ParticleSystemSurfaceView(this);
         setContentView(mGLSurfaceView);
         mGLSurfaceView.requestFocus();//获取焦点
         mGLSurfaceView.setFocusableInTouchMode(true);//设置为可触控
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mGLSurfaceView.onResume();
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mGLSurfaceView.onPause();
-    }
 }
