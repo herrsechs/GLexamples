@@ -13,7 +13,7 @@ uniform float       u_Time;
 uniform float       u_eRadius;
 uniform float       u_eVelocity;
 uniform float       u_eDecay;
-uniform float       u_eSize
+uniform float       u_eSize;
 
 // Varying
 varying vec3        v_pColorOffset;

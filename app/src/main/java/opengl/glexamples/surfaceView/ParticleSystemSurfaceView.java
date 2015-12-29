@@ -8,6 +8,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import opengl.glexamples.glUtil.MatrixState;
+import opengl.glexamples.shape.Explosion;
 import opengl.glexamples.shape.PolarRose;
 
 /**
@@ -30,17 +31,18 @@ public class ParticleSystemSurfaceView extends GLSurfaceView{
      */
     private class SceneRenderer implements Renderer{
         private PolarRose mPolarRose;
-
+        private Explosion mExplosion;
         public void onSurfaceCreated(GL10 gl, EGLConfig config){
             GLES20.glClearColor(0.53f,0.81f,0.92f, 1.0f);
             GLES20.glEnable(GLES20.GL_BLEND);
             GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
             this.mPolarRose = new PolarRose(ParticleSystemSurfaceView.this);
+            this.mExplosion = new Explosion(ParticleSystemSurfaceView.this);
         }
 
         public void onDrawFrame(GL10 gl){
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-            mPolarRose.draw();
+            this.mExplosion.draw();
         }
 
         public void onSurfaceChanged(GL10 gl, int width, int height){
