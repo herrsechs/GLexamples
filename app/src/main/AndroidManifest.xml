@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="opengl.glexamples" >
-    <!-- Permission for Reading Contacts-->
+
+    <!-- Permission for Reading Contacts -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
@@ -15,7 +16,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,7 +24,23 @@
         <activity android:name=".glActivity.CreateIDCardActivity"/>
         <activity android:name=".glActivity.ParticleSystemActivity"/>
         <activity android:name=".glActivity.DisplayContactActivity"/>
+        <activity
+            android:name=".glActivity.MenuActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".glActivity.EditContactActivity"
+            android:label="@string/title_activity_edit_profile" >
+        </activity>
+        <activity
+            android:name=".glActivity.AddContactActivity"
+            android:label="@string/title_activity_edit_profile" >
+        </activity>
     </application>
-
 
 </manifest>

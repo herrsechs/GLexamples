@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:orientation="vertical" android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
 
-<!--</LinearLayout>-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!--<com.markupartist.android.widget.ActionBar-->
-        <!--android:id="@+id/actionbar"-->
-        <!--style="@style/ActionBar"-->
-        <!--/>-->
 
     <RelativeLayout
         android:id="@+id/searchBarContainer"
@@ -48,7 +40,7 @@
             android:textSize="15sp"
             android:imeOptions="actionDone"
             android:focusableInTouchMode="true"
-            />
+            android:textColor="#1e1d24" />
 
     </RelativeLayout>
 
@@ -58,27 +50,21 @@
         android:layout_below="@id/searchBarContainer"
         android:orientation="vertical">
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/contact_recycler_view"
+        <!--<com.twotoasters.jazzylistview.JazzyListView-->
+            <!--android:id="@+id/listView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"/>-->
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#ffffff">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent" />
 
 
     </LinearLayout>
 
 
-    <!--<com.ngohung.view.ExampleContactListView-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_below="@id/searchBarContainer"-->
-
-        <!--android:id="@+id/listview" />-->
 
 
 </RelativeLayout>
+
+

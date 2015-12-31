@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:background="@android:color/white"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_top">
+
+
+
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="234dp"
+            android:layout_weight="0.80"
+            android:background="#222647">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:padding="7dp"
+                    android:text="Upload Picture"
+                    android:textSize="15sp"
+                    android:textColor="#959997"
+                    android:layout_gravity="center_horizontal|bottom"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/button_cancel"
+                android:layout_gravity="left|top"
+                android:background="#00d8d0ff" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Done"
+                android:id="@+id/button_done"
+                android:layout_gravity="right|top"
+                android:background="#222647" />
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:background="#74ddff" />
+
+        </FrameLayout>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#ebebeb"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="#fbf9ff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="First Name"
+            android:id="@+id/textView"
+            android:textColor="#000000"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/edit_name"
+            android:background="@drawable/bg_edittext"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:layout_marginTop="5dp"
+            android:textColor="#36333f"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone"
+            android:id="@+id/textView3"
+            android:layout_gravity="center_horizontal|left"
+            android:layout_marginLeft="64dp"
+            android:background="#00d8d0ff"
+            android:textColor="#000000"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/edit_phone"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="64dp"
+            android:textColor="#2c2c2c"
+            android:background="@drawable/bg_edittext"
+            android:layout_gravity="top" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:id="@+id/textView4"
+            android:layout_gravity="center_horizontal|left"
+            android:textColor="#000000"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/edit_email"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_edittext"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Group"
+            android:id="@+id/textView5"
+            android:layout_marginLeft="64dp"
+            android:layout_gravity="left"
+            android:layout_marginTop="20dp"
+            android:textColor="#000000" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:id="@+id/spinner_group"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:spinnerMode="dropdown"
+            android:background="@drawable/bg_edittext"
+            android:foreground="#fbf9ff" />
+
+    </LinearLayout>
+
+</LinearLayout>
