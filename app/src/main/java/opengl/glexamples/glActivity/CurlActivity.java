@@ -61,7 +61,7 @@ public class CurlActivity extends Activity {
      */
     private class BitmapProvider implements CurlView.BitmapProvider {
 
-        private int[] mBitmapIds = { R.drawable.starrysky, R.drawable.obama, R.drawable.road_rage};
+        private int[] mBitmapIds = { R.drawable.whole_christmas, R.drawable.whole_green, R.drawable.whole_yellow};
 
         @Override
         public Bitmap getBitmap(int width, int height, int index) {

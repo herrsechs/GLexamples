@@ -306,7 +306,7 @@ public class IDCard {
         }
 
         if(this.deleted){
-            this.zShift -= UNIT;
+            this.zShift -= 5 * UNIT;
         }
 
         //this.translate(xShift, yShift, zShift);
