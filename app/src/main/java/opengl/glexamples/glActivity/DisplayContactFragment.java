@@ -100,7 +100,9 @@ public class DisplayContactFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), "Clicked item!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(getContext(), ShowIDCardActivity.class);
+                startActivity(intent);
             }
         });
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {

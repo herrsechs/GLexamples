@@ -41,7 +41,7 @@ public class EditContactActivity extends AppCompatActivity {
         setContentView(R.layout.edit_profile);
         context=this;
         contactdb=new ContactDatabase();
-        user = (UserEntity)getIntent().getParcelableExtra("user");
+        user = getIntent().getParcelableExtra("user");
         initView();
     }
 
