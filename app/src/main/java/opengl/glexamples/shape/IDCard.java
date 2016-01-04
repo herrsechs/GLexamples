@@ -9,14 +9,9 @@ import java.nio.FloatBuffer;
 
 import opengl.glexamples.glUtil.MatrixState;
 import opengl.glexamples.glUtil.ShaderUtil;
-import opengl.glexamples.surfaceView.IDCardSurfaceView;
-import opengl.glexamples.surfaceView.TriTextureSurfView;
 
 import static opengl.glexamples.glUtil.ShaderUtil.createProgram;
 
-/**
- * Created by LLLLLyj on 2015/10/18.
- */
 public class IDCard {
     int mProgram;
     int muMVPMatrixHandle;
@@ -311,7 +306,7 @@ public class IDCard {
         }
 
         if(this.deleted){
-            this.zShift -= 0.05 * UNIT;
+            this.zShift -= UNIT;
         }
 
         //this.translate(xShift, yShift, zShift);

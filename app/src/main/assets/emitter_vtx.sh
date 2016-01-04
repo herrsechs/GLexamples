@@ -24,8 +24,8 @@ void main(void)
 {
     // 1
     // Convert polar angle to cartesian coordinates and calculate radius
-    float x = cos(a_pID) + u_centerX;
-    float y = sin(a_pID) + u_centerY;
+    float x = cos(a_pID);
+    float y = sin(a_pID);
     float r = u_eRadius * a_pRadiusOffset;
 
     // 2
@@ -53,6 +53,8 @@ void main(void)
 
     // 5
     // Required OpenGLES 2.0 outputs
+    x += u_centerX;
+    y += u_centerY;
     if(u_start == 1){
         gl_Position = u_ProjectionMatrix * vec4(x, y, 0.5, 1.0);
     }
