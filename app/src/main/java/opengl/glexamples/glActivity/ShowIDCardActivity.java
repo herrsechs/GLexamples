@@ -32,15 +32,13 @@ public class ShowIDCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sv.setStartExplosion();
-                Toast.makeText(ShowIDCardActivity.this, "Clicked item!", Toast.LENGTH_LONG).show();
+                Toast.makeText(ShowIDCardActivity.this, "删除成功", Toast.LENGTH_LONG).show();
             }
         });
         this.return_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), MenuActivity.class);
-                startActivity(intent);
+                sv.resetCardPosition();
             }
         });
     }

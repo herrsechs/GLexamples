@@ -20,6 +20,7 @@ public class IDCard {
     int muTransX;
     int muTransY;
     int muTransZ;
+    int muAngle;
     String mVertexShader;
     String mFragmentShader;
 
@@ -53,7 +54,6 @@ public class IDCard {
     public IDCard(SurfaceView sv){
         initShader(sv);
         initVertexData(0, 0, 0);
-
     }
 
     public IDCard(SurfaceView sv, int initX, int initY, int initZ){
@@ -282,6 +282,7 @@ public class IDCard {
         muTransX          = GLES20.glGetUniformLocation(mProgram, "uTransX");
         muTransY          = GLES20.glGetUniformLocation(mProgram, "uTransY");
         muTransZ          = GLES20.glGetUniformLocation(mProgram, "uTransZ");
+        muAngle           = GLES20.glGetUniformLocation(mProgram, "uAngle");
     }
 
     public void drawFace(int pos, int texId){
@@ -311,14 +312,12 @@ public class IDCard {
 
         //this.translate(xShift, yShift, zShift);
 
-        MatrixState.rotate(yAngle, 0, 1, 0);
-        MatrixState.rotate(zAngle, 0, 0, 1);
-        MatrixState.rotate(xAngle, 1, 0, 0);
         MatrixState.scale(scale, scale, scale);
         GLES20.glUniformMatrix4fv(muMVPMatrixHandle, 1, false, MatrixState.getFinalMatrix(), 0);
         GLES20.glUniform1f(muTransX, this.xShift);
         GLES20.glUniform1f(muTransY, this.yShift);
         GLES20.glUniform1f(muTransZ, this.zShift);
+        GLES20.glUniform1f(muAngle,  this.yAngle);
         GLES20.glVertexAttribPointer
                 (
                         maPositionHandle,

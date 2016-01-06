@@ -10,9 +10,6 @@ import android.view.WindowManager;
 import opengl.glexamples.surfaceView.IDCardSurfaceView;
 import opengl.glexamples.surfaceView.TriTextureSurfView;
 
-/**
- * Created by LLLLLyj on 2015/10/18.
- */
 public class IDCardActivity extends AppCompatActivity {
     private IDCardSurfaceView mGLSurfaceView;
 

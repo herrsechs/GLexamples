@@ -51,6 +51,14 @@
                 android:layout_gravity="center"
                 android:background="#74ddff" />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change skin"
+                android:id="@+id/change_skin_button"
+                android:layout_gravity="center_horizontal|top"
+                android:background="#222647" />
+
         </FrameLayout>
 
         <ImageView
@@ -63,8 +71,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:background="#fbf9ff">
+        android:layout_height="fill_parent">
 
         <TextView
             android:layout_width="wrap_content"

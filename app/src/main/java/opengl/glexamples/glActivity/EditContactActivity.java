@@ -33,6 +33,7 @@ public class EditContactActivity extends AppCompatActivity {
     private UserEntity user;
     private Button done;
     private Button cancel;
+    private Button changeSkin;
     private ContactDatabase contactdb;
 
     @Override
@@ -76,6 +77,7 @@ public class EditContactActivity extends AppCompatActivity {
         group= (Spinner) findViewById(R.id.spinner_group);
         done= (Button) findViewById(R.id.button_done);
         cancel= (Button) findViewById(R.id.button_cancel);
+        changeSkin = (Button) findViewById(R.id.change_skin_button);
 
         //Get name from EditText
         name.setText(user.getName(), TextView.BufferType.EDITABLE);
@@ -152,6 +154,14 @@ public class EditContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        changeSkin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditContactActivity.this, CurlActivity.class);
+                startActivity(intent);
             }
         });
     }

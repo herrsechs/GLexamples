@@ -274,7 +274,6 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
                 updateCurlPos(mPointerPos);
                 break;
             }
-            case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
                 if (mCurlState == CURL_LEFT || mCurlState == CURL_RIGHT) {
                     // Animation source is the point from where animation starts.

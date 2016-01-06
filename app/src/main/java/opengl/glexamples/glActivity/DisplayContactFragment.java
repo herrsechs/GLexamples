@@ -101,7 +101,7 @@ public class DisplayContactFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent();
-                intent.setClass(getContext(), CurlActivity.class);
+                intent.setClass(getContext(), ShowIDCardActivity.class);
                 startActivity(intent);
             }
         });

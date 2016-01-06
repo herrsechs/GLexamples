@@ -1,12 +1,14 @@
 package opengl.glexamples.surfaceView;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import java.io.InputStream;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.jar.Attributes;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -33,6 +36,9 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
     private float mPreviousX;
     private float mPreviousY;
     private float mPreviousDist;
+    public  int   skinID;     // 0 for default, 1 for christmas, 2 for green, 3 for yellow
+    int[] ID_card_tex_ids = new int[6];
+    int   wallpaper_tex;
 
 
     public SingleIDCardSurfaceView(Context context, AttributeSet attrs){
@@ -41,8 +47,14 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
         mRenderer = new SceneRenderer();
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-        textureIds = new int[6];
+        textureIds = new int[12];
+        this.skinID = 0;      // default skin
+
+        SharedPreferences sp = context.getSharedPreferences("card_data", Context.MODE_WORLD_READABLE);
+        this.skinID = sp.getInt("skinID", 0) + 1;
+
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
@@ -88,8 +100,8 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
         else if(pointerCount == 3){
             float dy = y - mPreviousY;
             float dx = x - mPreviousX;
-            mRenderer.texRect.xShift += 0.01*dx;
-            mRenderer.texRect.yShift -= 0.01*dy;
+
+            this.mRenderer.texRect.yAngle -= dx * Math.PI / 180;
 
             mPreviousX = x;
             mPreviousY = y;
@@ -111,14 +123,12 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
         TextureRect wallPaper;
         Explosion mExplosion;
 
+
         public void onDrawFrame(GL10 gl10){
 
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-            int[] ids = new int[]{textureIds[0], textureIds[1], textureIds[1], textureIds[1],
-                    textureIds[1], textureIds[1]};
-
-            wallPaper.drawSelf(textureIds[2]);
-            texRect.drawSelf(ids);
+            wallPaper.drawSelf(wallpaper_tex);
+            texRect.drawSelf(ID_card_tex_ids);
             mExplosion.draw();
         }
 
@@ -132,6 +142,12 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
             GLES20.glEnable(GLES20.GL_DEPTH_TEST);
             initTexture();
             GLES20.glDisable(GLES20.GL_CULL_FACE);
+            ID_card_tex_ids = new int[]{
+                    textureIds[0], textureIds[1],
+                    textureIds[1], textureIds[1],
+                    textureIds[1], textureIds[1]
+            };
+            wallpaper_tex = textureIds[2];
         }
 
         public void onSurfaceChanged(GL10 gl10, int width, int height){
@@ -145,17 +161,16 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
 
     public void initTexture()//textureId
     {
-        int[] textures = new int[3];
+        int[] textures = new int[12];
         GLES20.glGenTextures
                 (
-                        3,          //产生纹理的id数量
+                        12,          //产生纹理的id数量
                         textures,   //纹理id数组
                         0           //偏移量
                 );
-        textureIds[0] =textures[0];
 
         //Bitmap bmp = Bitmap.createBitmap(1200, 600, Bitmap.Config.ARGB_8888);
-        Bitmap front = readBitmap(R.drawable.card_front);
+
         /*
         String name = "Doge";
         String gender = "雄";
@@ -184,23 +199,108 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
         canvas.drawBitmap(bmp, null, rect, paint);
         */
         //加载纹理进入显存
-        bindTexture(0, front);
+
+        int front_tex_id = 0;
+        int back_tex_id = 0;
+        int background_tex_id = 0;
+        switch(skinID){
+            case 0:
+                front_tex_id      = R.drawable.card_front;
+                back_tex_id       = R.drawable.card_back;
+                background_tex_id = R.drawable.starrysky;
+                card_text_pos_y = new int[]{450, 510, 570, 630};
+                card_text_pos_x = new int[]{150};
+                card_text_size  = 30;
+                card_text_color = Color.BLACK;
+                break;
+            case 1:
+                front_tex_id      = R.drawable.front_christmas;
+                back_tex_id       = R.drawable.back_christmas;
+                background_tex_id = R.drawable.background_christmas;
+                card_text_pos_y = new int[]{450, 510, 570, 630};
+                card_text_pos_x = new int[]{150};
+                card_text_size  = 30;
+                card_text_color = Color.WHITE;
+                break;
+            case 2:
+                front_tex_id      = R.drawable.front_green;
+                back_tex_id       = R.drawable.back_green;
+                background_tex_id = R.drawable.background_green;
+                card_text_pos_y = new int[]{450, 510, 570, 630};
+                card_text_pos_x = new int[]{150};
+                card_text_size  = 30;
+                card_text_color = Color.CYAN;
+                break;
+            case 3:
+                front_tex_id      = R.drawable.front_yellow;
+                back_tex_id       = R.drawable.back_yellow;
+                background_tex_id = R.drawable.background_yellow;
+                card_text_pos_y = new int[]{450, 510, 570, 630};
+                card_text_pos_x = new int[]{550};
+                card_text_size  = 30;
+                card_text_color = Color.WHITE;
+                break;
+            default:
+                front_tex_id      = R.drawable.card_front;
+                back_tex_id       = R.drawable.card_back;
+                background_tex_id = R.drawable.starrysky;
+                break;
+        }
+
+        textureIds[0] =textures[0];
+        Bitmap front = readBitmap(front_tex_id);
+        Bitmap textFront = editIdText(front);
+        bindTexture(0, textFront);
+        textFront.recycle();
         front.recycle();
-        front = null;
         //bmp.recycle(); 		  //纹理加载成功后释放内存中的纹理图
         //bmp = null;
 
         textureIds[1] = textures[1];
-        Bitmap wall = readBitmap(R.drawable.card_back);
-        bindTexture(1, wall);
-        wall.recycle(); 		  //纹理加载成功后释放内存中的纹理图
-        wall = null;
+        Bitmap back = readBitmap(back_tex_id);
+        bindTexture(1, back);
+        back.recycle(); 		  //纹理加载成功后释放内存中的纹理图
 
         textureIds[2] = textures[2];
-        Bitmap wallpaper = readBitmap(R.drawable.starrysky);
+        Bitmap wallpaper = readBitmap(background_tex_id);
         bindTexture(2, wallpaper);
         wallpaper.recycle();
-        wallpaper = null;
+
+
+    }
+
+    int[] card_text_pos_y;
+    int[] card_text_pos_x;
+    int   card_text_size;
+    int   card_text_color;
+
+    private Bitmap editIdText(Bitmap b){
+        Bitmap bmp = Bitmap.createBitmap(1350, 800, Bitmap.Config.ARGB_8888);
+
+
+        String name = "王力宏";
+        String phone = "800-820-8820";
+        String email = "lihongwang@gmail.com";
+        String address = "加州伯克利音乐学院";
+
+
+
+        Canvas canvas = new Canvas(bmp);
+        Paint paint = new Paint();
+        canvas.drawBitmap(b, 0, 0, paint);
+
+
+
+        paint.setTextSize(card_text_size + 15);
+        paint.setColor(card_text_color);
+        paint.setTypeface(Typeface.MONOSPACE);
+        canvas.drawText(name, card_text_pos_x[0], card_text_pos_y[0], paint);
+        paint.setTextSize(card_text_size);
+        canvas.drawText(phone, card_text_pos_x[0], card_text_pos_y[1], paint);
+        canvas.drawText(email, card_text_pos_x[0], card_text_pos_y[2], paint);
+        canvas.drawText(address, card_text_pos_x[0], card_text_pos_y[3], paint);
+
+        return bmp;
     }
 
     private Bitmap readBitmap(int id){
@@ -208,9 +308,7 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inJustDecodeBounds = false;
         opt.inSampleSize = 2;
-        Bitmap bmp = BitmapFactory.decodeStream(is, null, opt);
-        return bmp;
-
+        return BitmapFactory.decodeStream(is, null, opt);
     }
 
     private void bindTexture(int pos, Bitmap bmp){
@@ -234,5 +332,12 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
         this.mRenderer.mExplosion.centerX = this.mRenderer.texRect.centerX;
         this.mRenderer.mExplosion.centerY = this.mRenderer.texRect.centerY;
         this.mRenderer.texRect.deleted = true;
+    }
+
+    public void resetCardPosition(){
+        this.mRenderer.texRect.xShift = 0;
+        this.mRenderer.texRect.yShift = 0;
+        this.mRenderer.texRect.zShift = 0;
+        this.mRenderer.texRect.yAngle = 0;
     }
 }

@@ -1,12 +1,16 @@
 package opengl.glexamples.glActivity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import opengl.glexamples.R;
 import opengl.glexamples.surfaceView.CurlView;
@@ -18,11 +22,16 @@ import opengl.glexamples.surfaceView.CurlView;
 public class CurlActivity extends Activity {
 
     private CurlView mCurlView;
-
+    private SharedPreferences sp;
+    private Context context;
+    private SharedPreferences.Editor editor;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curl);
+        context = this.getApplicationContext();
+        sp = context.getSharedPreferences("card_data", Context.MODE_PRIVATE);
+
 
         int index = 0;
         if (getLastNonConfigurationInstance() != null) {
@@ -33,6 +42,31 @@ public class CurlActivity extends Activity {
         mCurlView.setSizeChangedObserver(new SizeChangedObserver());
         mCurlView.setCurrentIndex(index);
         mCurlView.setBackgroundColor(0xFF202830);
+        mCurlView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editor = sp.edit();
+                editor.putInt("skinID", mCurlView.getCurrentIndex());
+                editor.apply();
+                String skin_name = "";
+                switch (mCurlView.getCurrentIndex()){
+                    case 0:
+                        skin_name = "圣诞颂歌";
+                        break;
+                    case 1:
+                        skin_name = "和风樱花";
+                        break;
+                    case 2:
+                        skin_name = "复古木纹";
+                        break;
+                    case 3:
+                        skin_name = "商务简约";
+                        break;
+                }
+                Toast.makeText(context, skin_name, Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
 
         // This is something somewhat experimental. Before uncommenting next
         // line, please see method comments in CurlView.
