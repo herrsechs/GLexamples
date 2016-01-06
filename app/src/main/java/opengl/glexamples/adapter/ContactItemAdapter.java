@@ -1,11 +1,13 @@
 package opengl.glexamples.adapter;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.Contacts;
 import android.provider.ContactsContract;
@@ -15,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,104 +30,45 @@ import opengl.glexamples.R;
 /**
  * Created by Angel on 15/12/16.
  */
-public class ContactItemAdapter extends RecyclerView.Adapter<ContactItemAdapter.ContactItemViewHolder> {
-
-    private final LayoutInflater layoutInflater;
-    private final Context context;
-    private ArrayList<String> usernames;
-
-
-//    public ArrayList<String > getContact(){
-//
-//        ArrayList<String> usernames=new ArrayList<>();
-//
-//        Cursor cursor = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
-//                null, null, null, null);
-//        Cursor phones = null;
-//        Cursor emails=  null;
-//        int contactIdIndex = 0;
-//        int nameIndex = 0;
-//
-//        if(cursor.getCount() > 0) {
-//            contactIdIndex = cursor.getColumnIndex(ContactsContract.Contacts._ID);
-//            nameIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-//        }
-//
-//
-//        while(cursor.moveToNext()) {
-//            String contactId = cursor.getString(contactIdIndex);
-//            String name = cursor.getString(nameIndex);
-//            usernames.add(name);
-
-            /*
-             * 查找该联系人的phone信息
-             */
-//            phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-//                    null,
-//                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + contactId,
-//                    null, null);
-//            int phoneIndex = 0;
-//            if(phones.getCount() > 0) {
-//                phoneIndex = phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-//            }
-//            while(phones.moveToNext()) {
-//                String phoneNumber = phones.getString(phoneIndex);
-//                Log.i(TAG, phoneNumber);
-//            }
-
-            /*
-             * 查找该联系人的email信息
-             */
-//            emails = context.getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-//                    null,
-//                    ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=" + contactId,
-//                    null, null);
-//            int emailIndex = 0;
-//            if(emails.getCount() > 0) {
-//                emailIndex = emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
-//            }
-//            while(phones.moveToNext()) {
-//                String email = emails.getString(emailIndex);
-//                Log.i(TAG,email);
-//            }
-      //  }
-     //   cursor.close();
-//        phones.close();
-//        emails.close();
-
-//        return usernames;
-//    }
+public class ContactItemAdapter extends ArrayAdapter<String> {
+    protected static final int[] itemColor=new int[]{
+            0xFFF7A639,
+            0xFFF7A07D,
+            0xFFF9A9A1,
+            0xFFFCB7B7,
+            0xFFFAD2D2,
+            0xFFF7D5F3,
+            0xFFD8D6F6,
+            0xFFB5C7E5,
+            0xFFA3C9E1
+    };
 
 
-    public ContactItemAdapter(Context context,ArrayList<String> usernames) {
-        this.context = context;
-        this.layoutInflater = LayoutInflater.from(context);
-        this.usernames=usernames;
+    public ContactItemAdapter(Context context,ArrayList<String> names) {
+        super(context,0,names);
     }
 
-    public int getItemCount(){
-        return this.usernames.size();
-    }
 
     @Override
-    public ContactItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        CardView cardView=(CardView)layoutInflater.inflate(R.layout.contact_item,viewGroup,false);
-        return new ContactItemViewHolder(cardView);
-    }
+    public View getView(int position,View convertView,ViewGroup parent){
 
-    public void onBindViewHolder(ContactItemViewHolder holder,int position){
-        holder.nameView.setText(this.usernames.get(position));
-    }
-
-
-    public static class ContactItemViewHolder extends RecyclerView.ViewHolder{
-        private TextView nameView;
-        private ImageView userImg;
-
-        public ContactItemViewHolder(View view){
-            super(view);
-            this.nameView=(TextView)view.findViewById(R.id.nameView);
-            this.userImg=(ImageView)view.findViewById(R.id.userImg);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_item,parent,false);
         }
+
+
+
+        String name=getItem(position);
+        TextView tvName=(TextView)convertView.findViewById(R.id.tvName);
+        for(int i=0;i<9;i++){
+            if(i==position%9){
+                convertView.setBackgroundColor(itemColor[i]);
+            }
+        }
+
+        tvName.setText(name);
+
+        return convertView;
     }
+
 }
