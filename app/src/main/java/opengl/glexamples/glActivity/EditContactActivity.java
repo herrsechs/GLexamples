@@ -18,7 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import opengl.glexamples.ContactDatabase;
+import opengl.glexamples.ContactDAO;
 import opengl.glexamples.R;
 import opengl.glexamples.UserEntity;
 
@@ -27,20 +27,20 @@ public class EditContactActivity extends AppCompatActivity {
     private EditText name;
     private EditText phone;
     private EditText email;
-    private Spinner group;
-    private String[] groupType;
+    private Spinner category;
+    private String[] categoryType;
     private ArrayAdapter adapter;
     private UserEntity user;
     private Button done;
     private Button cancel;
-    private ContactDatabase contactdb;
+    private ContactDAO contactdb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile);
         context=this;
-        contactdb=new ContactDatabase();
+        contactdb=new ContactDAO(this);
         user = (UserEntity)getIntent().getParcelableExtra("user");
         initView();
     }
@@ -73,7 +73,7 @@ public class EditContactActivity extends AppCompatActivity {
         name= (EditText) findViewById(R.id.edit_name);
         phone= (EditText) findViewById(R.id.edit_phone);
         email= (EditText) findViewById(R.id.edit_email);
-        group= (Spinner) findViewById(R.id.spinner_group);
+        category= (Spinner) findViewById(R.id.spinner_category);
         done= (Button) findViewById(R.id.button_done);
         cancel= (Button) findViewById(R.id.button_cancel);
 
@@ -127,22 +127,22 @@ public class EditContactActivity extends AppCompatActivity {
             }
         });
 
-        //Get group form Spinner
-        groupType=new String[]{"默认","同事","家人","同学"};
-        adapter=new ArrayAdapter(this,android.R.layout.simple_spinner_item,groupType);
+        //Get category form Spinner
+        categoryType=new String[]{"默认","同事","家人","同学"};
+        adapter=new ArrayAdapter(this,android.R.layout.simple_spinner_item,categoryType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        group.setAdapter(adapter);
-        group.setVisibility(View.VISIBLE);//设置默认值
-        group.setOnItemSelectedListener(new SpinnerSelectedListener());
+        category.setAdapter(adapter);
+        category.setVisibility(View.VISIBLE);//设置默认值
+        category.setOnItemSelectedListener(new SpinnerSelectedListener());
 
         //Submit and create new user
-        done.setOnClickListener(new View.OnClickListener(){
+        done.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Integer id=contactdb.getCount()+1;
-                contactdb.insert(id.toString(), user.getName(), user.getPhone(), user.getEmail());
+                contactdb.update(user);
                 Toast.makeText(context, "Edit Successfully!", Toast.LENGTH_LONG).show();
+                finish();
 
             }
         });
@@ -160,8 +160,8 @@ public class EditContactActivity extends AppCompatActivity {
     class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Integer _group=position;
-            user.setGroup(_group.toString());
+            Integer _category=position;
+            user.setCategory(_category.toString());
         }
 
         @Override

@@ -12,17 +12,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 
-import opengl.glexamples.ContactDatabase;
+import opengl.glexamples.ContactDAO;
 import opengl.glexamples.R;
 import opengl.glexamples.ResideMenu.ResideMenu;
 import opengl.glexamples.ResideMenu.ResideMenuItem;
+import opengl.glexamples.UserEntity;
 
 /**
  * Created by Angel on 15/12/25.
  */
 public class MenuActivity extends FragmentActivity implements View.OnClickListener {
     MenuActivity mContext;
-    ContactDatabase contactdb;
+    ContactDAO contactdb;
     ResideMenu resideMenu;
     ResideMenuItem itemDefault;
     ResideMenuItem itemColleague;
@@ -38,7 +39,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         mContext = this;
-        contactdb=new ContactDatabase();
+        contactdb=new ContactDAO(this);
         setUpMenu();
         synContactdb(this);
         if( savedInstanceState == null ){
@@ -113,9 +114,9 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 
 
 
-    private void changeFragment(Fragment targetFragment,String group){
+    private void changeFragment(Fragment targetFragment,String category){
         Bundle bundle=new Bundle();
-        bundle.putString("group", group);
+        bundle.putString("category", category);
 
         resideMenu.clearIgnoredViewList();
         targetFragment.setArguments(bundle);
@@ -139,7 +140,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 
         int contactIdIndex=0;
         int nameIndex=0;
-        String contactId;
+        String contactId; // Id of phone contacts
         String name;
         String phone=null;
         String email=null;
@@ -193,7 +194,18 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 
             phoneCursor.close();
             emailCursor.close();
-            contactdb.insert(contactId,name,phone,email);
+
+            //Id in application contacts
+            int id=contactdb.getCount()+1;
+
+            UserEntity user=new UserEntity();
+            user.setId(Integer.toString(id));
+            user.setName(name);
+            user.setPhone(phone);
+            user.setEmail(email);
+            user.setCategory("0");
+            user.setStyle("0");
+            contactdb.insert(user);
 
         }
     }

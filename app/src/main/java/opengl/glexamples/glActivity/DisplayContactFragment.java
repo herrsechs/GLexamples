@@ -24,9 +24,10 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
 
-import opengl.glexamples.ContactDatabase;
+import opengl.glexamples.ContactDAO;
 import opengl.glexamples.R;
 import opengl.glexamples.UserEntity;
+import opengl.glexamples.adapter.ContactItemAdapter;
 
 /**
  * Created by Angel on 15/12/25.
@@ -36,16 +37,16 @@ public class DisplayContactFragment extends Fragment {
     //private JazzyListView listView;
     private SwipeMenuListView listView;
     private EditText inquireContact;
-    private ContactDatabase contactdb;
-    private String group;
+    private ContactDAO contactdb;
+    private String category;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.contact, container, false);
         listView   = (SwipeMenuListView) parentView.findViewById(R.id.listView);
         inquireContact= (EditText) parentView.findViewById(R.id.input_search_query);
-        contactdb=new ContactDatabase();
-        group=getArguments().getString("group");
+        contactdb=new ContactDAO(this.getContext());
+        category=getArguments().getString("category");
         initView();
         return parentView;
     }
@@ -59,39 +60,29 @@ public class DisplayContactFragment extends Fragment {
                 // create "open" item
                 SwipeMenuItem openItem = new SwipeMenuItem(
                         getActivity().getApplicationContext());
-                // set item background
-                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                        0xCE)));
-                // set item width
+                openItem.setBackground(new ColorDrawable(Color.rgb(0xF5, 0x92,
+                        0x0F)));
                 openItem.setWidth(150);
-                // set item title
                 openItem.setTitle("Edit");
-                // set item title fontsize
                 openItem.setTitleSize(18);
-                // set item title font color
                 openItem.setTitleColor(Color.WHITE);
-                // add to menu
                 menu.addMenuItem(openItem);
 
                 // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getActivity().getApplicationContext());
-                // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                // set item width
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0x32,
+                        0x6B, 0x92)));
                 deleteItem.setWidth(150);
-                // set a icon
                 deleteItem.setIcon(R.drawable.ic_delete);
-                // add to menu
                 menu.addMenuItem(deleteItem);
             }
         };
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                findUserByGroup(group));
+        ContactItemAdapter arrayAdapter=new ContactItemAdapter(
+                getContext(),
+                findUserByCategory(category));
+
 
         // set creator
         listView.setMenuCreator(creator);
@@ -110,8 +101,8 @@ public class DisplayContactFragment extends Fragment {
                     case 0:
                         // edit
                         // Get User which is selected
-                        String id=Integer.toString(position);
-                        UserEntity user=contactdb.findUserById(id);
+                        String id=Integer.toString(position+1); //position starts from 0 while contact starts from 1
+                        UserEntity user=contactdb.getUserById(id);
                         // Bind in intent
                         Intent intent=new Intent();
                         Bundle bundle=new Bundle();
@@ -155,19 +146,19 @@ public class DisplayContactFragment extends Fragment {
         });
         }
 
-        private ArrayList<String> findUserByGroup(String group){
+        private ArrayList<String> findUserByCategory(String category){
         ArrayList<String> usernames;
-        usernames=contactdb.findUserByGroup(group);
+        usernames=contactdb.getUserByCategory(category);
         return usernames;
     }
 
         public void searchAndDisplayUser(String username){
-        int idx=contactdb.findUserByName(username);
+        int idx=contactdb.getUserByName(username);
 
-        if(-1==idx){}
+        if(-1==idx){ return;}
 
         //找到联系人
-        listView.smoothScrollToPositionFromTop(idx,20);
+        listView.smoothScrollToPosition(idx+1);
         }
 
         public void deleteUser(final int position){
