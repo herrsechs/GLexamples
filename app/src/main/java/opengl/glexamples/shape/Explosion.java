@@ -11,11 +11,8 @@ import java.util.Random;
 import opengl.glexamples.glUtil.MatrixState;
 import opengl.glexamples.glUtil.ShaderUtil;
 
-/**
- * Created by LLLLLyj on 2015/12/27.
- */
 public class Explosion {
-    final int NUM_PARTICLES = 180;
+    final int NUM_PARTICLES = 20000;
     private Random rand = new Random(System.currentTimeMillis());
     float   eRadius;
     float   eVelocity;
@@ -26,6 +23,11 @@ public class Explosion {
     float[] gravity;
     float   life;
     float   time;
+    int     start;
+
+    public boolean explode;
+    public float   centerX = 0f;
+    public float   centerY = 0f;
 
     int mProgram;
     String mVertexShader;
@@ -59,8 +61,12 @@ public class Explosion {
     int u_eDecay;
     int u_eSize;
     int u_eColor;
+    int u_start;
+    int u_centerX;
+    int u_centerY;
 
     public Explosion(SurfaceView sv){
+        explode = false;
         initShader(sv);
         loadParticleSystem();
     }
@@ -85,16 +91,21 @@ public class Explosion {
         u_eDecay          = GLES20.glGetUniformLocation(mProgram, "u_eDecay");
         u_eSize           = GLES20.glGetUniformLocation(mProgram, "u_eSize");
         u_eColor          = GLES20.glGetUniformLocation(mProgram, "u_eColor");
+        u_start           = GLES20.glGetUniformLocation(mProgram, "u_start");
+        u_centerX         = GLES20.glGetUniformLocation(mProgram, "u_centerX");
+        u_centerY         = GLES20.glGetUniformLocation(mProgram, "u_centerY");
     }
 
     private void updateLifeCycle(){
-        this.time += 0.05;
-        if(this.time > this.life)
-            this.time = 0f;
+        if(explode) {
+            this.time += 0.03;
+            this.start = 1;
+        }
     }
 
     private void loadParticleSystem(){
         // Offset bounds
+        start           = 0;
         float oRadius   = 0.10f;      // 0.0 = circle; 1.0 = ring
         float oVelocity = 0.50f;    // Speed
         float oDecay    = 1f;       // Time
@@ -159,10 +170,10 @@ public class Explosion {
         this.a_pColorOffsetIndex    = buffers[4];
         this.a_pIDIndex             = buffers[5];
 
-        this.eRadius   = 3f;
+        this.eRadius   = 6f;
         this.eVelocity = 3.00f;
         this.eDecay    = 2.00f;
-        this.eSize     = 32.00f;
+        this.eSize     = 4.00f;
         this.eColor    = new float[]{1f, 0.5f, 0f};
 
         float growth   = this.eRadius / this.eVelocity;
@@ -171,52 +182,56 @@ public class Explosion {
         float drag     = 10f;
         this.gravity   = new float[]{0f, -9.81f*(1.0f/drag)};
 
+        this.time      = 0;
     }
 
     public void draw(){
-        GLES20.glUseProgram(mProgram);
-        MatrixState.setInitStack();
 
-        this.updateLifeCycle();
-        /**
-         * Uniform
-         */
-        GLES20.glUniformMatrix4fv(this.u_ProjectionMatrix, 1, false, MatrixState.getFinalMatrix(), 0);
-        GLES20.glUniform2f(this.u_Gravity, this.gravity[0], this.gravity[1]);
-        GLES20.glUniform1f(this.u_Time, this.time);
-        GLES20.glUniform1f(this.u_eRadius, this.eRadius);
-        GLES20.glUniform1f(this.u_eVelocity, this.eVelocity);
-        GLES20.glUniform1f(this.u_eDecay, this.eDecay);
-        GLES20.glUniform1f(this.u_eSize, this.eSize);
-        GLES20.glUniform3f(this.u_eColor, this.eColor[0], this.eColor[1], this.eColor[2]);
+            GLES20.glUseProgram(mProgram);
+            MatrixState.setInitStack();
 
-        /**
-         * Attrib
-         */
+            this.updateLifeCycle();
+            /**
+             * Uniform
+             */
+            GLES20.glUniformMatrix4fv(this.u_ProjectionMatrix, 1, false, MatrixState.getFinalMatrix(), 0);
+            GLES20.glUniform2f(this.u_Gravity, this.gravity[0], this.gravity[1]);
+            GLES20.glUniform1f(this.u_Time, this.time);
+            GLES20.glUniform1f(this.u_eRadius, this.eRadius);
+            GLES20.glUniform1f(this.u_eVelocity, this.eVelocity);
+            GLES20.glUniform1f(this.u_eDecay, this.eDecay);
+            GLES20.glUniform1f(this.u_eSize, this.eSize);
+            GLES20.glUniform3f(this.u_eColor, this.eColor[0], this.eColor[1], this.eColor[2]);
+            GLES20.glUniform1i(this.u_start, this.start);
+            GLES20.glUniform1f(this.u_centerX, this.centerX);
+            GLES20.glUniform1f(this.u_centerY, this.centerY);
+            /**
+             * Attrib
+             */
 
-        this.bindVBO(this.a_pID, this.a_pIDIndex, 1);
-        this.bindVBO(this.a_pRadiusOffset, this.a_pVelocityOffsetIndex, 1);
-        this.bindVBO(this.a_pVelocityOffset, this.a_pVelocityOffsetIndex, 1);
-        this.bindVBO(this.a_pDecayOffset, this.a_pDecayOffsetIndex, 1);
-        this.bindVBO(this.a_pSizeOffset, this.a_pSizeOffsetIndex, 1);
-        this.bindVBO(this.a_pColorOffset, this.a_pColorOffsetIndex, 3);
+            this.bindVBO(this.a_pID, this.a_pIDIndex, 1);
+            this.bindVBO(this.a_pRadiusOffset, this.a_pVelocityOffsetIndex, 1);
+            this.bindVBO(this.a_pVelocityOffset, this.a_pVelocityOffsetIndex, 1);
+            this.bindVBO(this.a_pDecayOffset, this.a_pDecayOffsetIndex, 1);
+            this.bindVBO(this.a_pSizeOffset, this.a_pSizeOffsetIndex, 1);
+            this.bindVBO(this.a_pColorOffset, this.a_pColorOffsetIndex, 3);
 
-        GLES20.glDrawArrays(GLES20.GL_POINTS, 0, NUM_PARTICLES);
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+            GLES20.glDrawArrays(GLES20.GL_POINTS, 0, NUM_PARTICLES);
+            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-        GLES20.glDisableVertexAttribArray(this.a_pID);
-        GLES20.glDisableVertexAttribArray(this.a_pRadiusOffset);
-        GLES20.glDisableVertexAttribArray(this.a_pVelocityOffset);
-        GLES20.glDisableVertexAttribArray(this.a_pDecayOffset);
-        GLES20.glDisableVertexAttribArray(this.a_pSizeOffset);
-        GLES20.glDisableVertexAttribArray(this.a_pColorOffset);
+            GLES20.glDisableVertexAttribArray(this.a_pID);
+            GLES20.glDisableVertexAttribArray(this.a_pRadiusOffset);
+            GLES20.glDisableVertexAttribArray(this.a_pVelocityOffset);
+            GLES20.glDisableVertexAttribArray(this.a_pDecayOffset);
+            GLES20.glDisableVertexAttribArray(this.a_pSizeOffset);
+            GLES20.glDisableVertexAttribArray(this.a_pColorOffset);
     }
 
     private void bindVBO(int targetHandle, int targetIndex, int gap){
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, targetIndex);
         GLES20.glEnableVertexAttribArray(targetHandle);
         GLES20.glVertexAttribPointer(targetHandle,
-                1 * gap,
+                gap,
                 GLES20.GL_FLOAT,
                 false,
                 0,

@@ -14,7 +14,9 @@ uniform float       u_eRadius;
 uniform float       u_eVelocity;
 uniform float       u_eDecay;
 uniform float       u_eSize;
-
+uniform int         u_start;
+uniform float       u_centerX;
+uniform float       u_centerY;
 // Varying
 varying vec3        v_pColorOffset;
 
@@ -46,12 +48,19 @@ void main(void)
     {
         float time = (u_Time - growth) / decay;
         x = (x * r) + (u_Gravity.x * time);
-        y = (y * r) + (u_Gravity.y * time);
+        y = (y * r) + (-u_Gravity.y * time);
     }
 
     // 5
     // Required OpenGLES 2.0 outputs
-    gl_Position = u_ProjectionMatrix * vec4(x, y, 0.0, 1.0);
+    x += u_centerX;
+    y += u_centerY;
+    if(u_start == 1){
+        gl_Position = u_ProjectionMatrix * vec4(x, y, 0.5, 1.0);
+    }
+    else{
+        gl_Position = u_ProjectionMatrix * vec4(x, y, 0.5, 0.0);
+    }
     gl_PointSize = max(0.0, (u_eSize + a_pSizeOffset));
 
     // Fragment Shader outputs

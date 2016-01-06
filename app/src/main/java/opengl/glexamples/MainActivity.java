@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import opengl.glexamples.glActivity.CreateIDCardActivity;
+import opengl.glexamples.glActivity.ShowIDCardActivity;
 import opengl.glexamples.glActivity.IDCardActivity;
 import opengl.glexamples.glActivity.ParticleSystemActivity;
 
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this, CreateIDCardActivity.class);
+                intent.setClass(MainActivity.this, ShowIDCardActivity.class);
                 startActivity(intent);
             }
         });
