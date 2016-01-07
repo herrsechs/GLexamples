@@ -11,7 +11,7 @@
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:theme="@style/Theme.AppCompat"
         android:hardwareAccelerated="true">
         <activity
             android:name=".MainActivity"
@@ -22,6 +22,8 @@
         <activity android:name=".glActivity.ShowIDCardActivity"/>
         <activity android:name=".glActivity.ParticleSystemActivity"/>
         <activity android:name=".glActivity.CurlActivity"/>
+        <activity android:name=".myBluetooth.DeviceListActivity"/>
+        <activity android:name=".glActivity.BluetoothChat"/>
         <activity android:name=".glActivity.StartupAnimationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

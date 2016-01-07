@@ -17,6 +17,7 @@ uniform float       u_eSize;
 uniform int         u_start;
 uniform float       u_centerX;
 uniform float       u_centerY;
+uniform float       u_v0;
 // Varying
 varying vec3        v_pColorOffset;
 
@@ -26,6 +27,8 @@ void main(void)
     // Convert polar angle to cartesian coordinates and calculate radius
     float x = cos(a_pID);
     float y = sin(a_pID);
+    float cos_theta = x;
+    float sin_theta = y;
     float r = u_eRadius * a_pRadiusOffset;
 
     // 2
@@ -55,6 +58,7 @@ void main(void)
     // Required OpenGLES 2.0 outputs
     x += u_centerX;
     y += u_centerY;
+
     if(u_start == 1){
         gl_Position = u_ProjectionMatrix * vec4(x, y, 0.5, 1.0);
     }

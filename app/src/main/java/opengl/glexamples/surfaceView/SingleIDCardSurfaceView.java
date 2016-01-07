@@ -7,26 +7,25 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import java.io.InputStream;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.jar.Attributes;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import opengl.glexamples.R;
+import opengl.glexamples.UserEntity;
 import opengl.glexamples.glUtil.MatrixState;
 import opengl.glexamples.shape.Explosion;
 import opengl.glexamples.shape.IDCard;
+import opengl.glexamples.shape.Interstella;
 import opengl.glexamples.shape.TextureRect;
 
 
@@ -36,13 +35,15 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
     private float mPreviousX;
     private float mPreviousY;
     private float mPreviousDist;
+    private Context mContext;
     public  int   skinID;     // 0 for default, 1 for christmas, 2 for green, 3 for yellow
     int[] ID_card_tex_ids = new int[6];
     int   wallpaper_tex;
-
+    private UserEntity mUser;
 
     public SingleIDCardSurfaceView(Context context, AttributeSet attrs){
         super(context, attrs);
+        mContext = context;
         this.setEGLContextClientVersion(2);
         mRenderer = new SceneRenderer();
         setRenderer(mRenderer);
@@ -122,14 +123,16 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
         IDCard texRect;
         TextureRect wallPaper;
         Explosion mExplosion;
-
+        Interstella interstella;
 
         public void onDrawFrame(GL10 gl10){
 
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
+
             wallPaper.drawSelf(wallpaper_tex);
             texRect.drawSelf(ID_card_tex_ids);
             mExplosion.draw();
+
         }
 
         public void onSurfaceCreated(GL10 gl10, EGLConfig config){
@@ -138,6 +141,9 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
             texRect    = new IDCard(SingleIDCardSurfaceView.this);
             wallPaper  = new TextureRect(SingleIDCardSurfaceView.this);
             mExplosion = new Explosion(SingleIDCardSurfaceView.this);
+            interstella= new Interstella(SingleIDCardSurfaceView.this);
+            interstella.setAlpha(1f);
+
 
             GLES20.glEnable(GLES20.GL_DEPTH_TEST);
             initTexture();
@@ -209,7 +215,7 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
                 back_tex_id       = R.drawable.card_back;
                 background_tex_id = R.drawable.starrysky;
                 card_text_pos_y = new int[]{450, 510, 570, 630};
-                card_text_pos_x = new int[]{150};
+                card_text_pos_x = new int[]{150, 150, 150, 150};
                 card_text_size  = 30;
                 card_text_color = Color.BLACK;
                 break;
@@ -218,7 +224,7 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
                 back_tex_id       = R.drawable.back_christmas;
                 background_tex_id = R.drawable.background_christmas;
                 card_text_pos_y = new int[]{450, 510, 570, 630};
-                card_text_pos_x = new int[]{150};
+                card_text_pos_x = new int[]{150, 150, 150, 150};
                 card_text_size  = 30;
                 card_text_color = Color.WHITE;
                 break;
@@ -227,16 +233,16 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
                 back_tex_id       = R.drawable.back_green;
                 background_tex_id = R.drawable.background_green;
                 card_text_pos_y = new int[]{450, 510, 570, 630};
-                card_text_pos_x = new int[]{150};
+                card_text_pos_x = new int[]{150, 150, 150, 150};
                 card_text_size  = 30;
-                card_text_color = Color.CYAN;
+                card_text_color = Color.GREEN;
                 break;
             case 3:
                 front_tex_id      = R.drawable.front_yellow;
                 back_tex_id       = R.drawable.back_yellow;
                 background_tex_id = R.drawable.background_yellow;
                 card_text_pos_y = new int[]{450, 510, 570, 630};
-                card_text_pos_x = new int[]{550};
+                card_text_pos_x = new int[]{700, 750, 700, 650};
                 card_text_size  = 30;
                 card_text_color = Color.WHITE;
                 break;
@@ -244,6 +250,10 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
                 front_tex_id      = R.drawable.card_front;
                 back_tex_id       = R.drawable.card_back;
                 background_tex_id = R.drawable.starrysky;
+                card_text_pos_y = new int[]{450, 510, 570, 630};
+                card_text_pos_x = new int[]{150, 150, 150, 150};
+                card_text_size  = 30;
+                card_text_color = Color.BLACK;
                 break;
         }
 
@@ -277,19 +287,22 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
     private Bitmap editIdText(Bitmap b){
         Bitmap bmp = Bitmap.createBitmap(1350, 800, Bitmap.Config.ARGB_8888);
 
+        String name = mUser.getName();
+        String phone = mUser.getPhone();
+        String email = mUser.getEmail();
+        String address = mUser.getCategory();
 
-        String name = "王力宏";
-        String phone = "800-820-8820";
-        String email = "lihongwang@gmail.com";
-        String address = "加州伯克利音乐学院";
-
+        if(null == name)
+            name = "";
+        if(null == phone)
+            phone = "";
+        if(null == email)
+            email = "";
 
 
         Canvas canvas = new Canvas(bmp);
         Paint paint = new Paint();
         canvas.drawBitmap(b, 0, 0, paint);
-
-
 
         paint.setTextSize(card_text_size + 15);
         paint.setColor(card_text_color);
@@ -298,7 +311,6 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
         paint.setTextSize(card_text_size);
         canvas.drawText(phone, card_text_pos_x[0], card_text_pos_y[1], paint);
         canvas.drawText(email, card_text_pos_x[0], card_text_pos_y[2], paint);
-        canvas.drawText(address, card_text_pos_x[0], card_text_pos_y[3], paint);
 
         return bmp;
     }
@@ -334,10 +346,18 @@ public class SingleIDCardSurfaceView extends GLSurfaceView{
         this.mRenderer.texRect.deleted = true;
     }
 
+    public void setStartInterstella(){
+        this.mRenderer.interstella.explode = true;
+    }
+
     public void resetCardPosition(){
         this.mRenderer.texRect.xShift = 0;
         this.mRenderer.texRect.yShift = 0;
         this.mRenderer.texRect.zShift = 0;
         this.mRenderer.texRect.yAngle = 0;
+    }
+
+    public void setUser(UserEntity u){
+        this.mUser = u;
     }
 }

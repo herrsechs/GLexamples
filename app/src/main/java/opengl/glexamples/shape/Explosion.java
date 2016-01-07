@@ -1,6 +1,9 @@
 package opengl.glexamples.shape;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
+import android.opengl.GLUtils;
 import android.view.SurfaceView;
 
 import java.nio.ByteBuffer;
@@ -8,6 +11,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.Random;
 
+import opengl.glexamples.R;
 import opengl.glexamples.glUtil.MatrixState;
 import opengl.glexamples.glUtil.ShaderUtil;
 
@@ -24,6 +28,7 @@ public class Explosion {
     float   life;
     float   time;
     int     start;
+    int[]   textureIds;
 
     public boolean explode;
     public float   centerX = 0f;
@@ -68,6 +73,7 @@ public class Explosion {
     public Explosion(SurfaceView sv){
         explode = false;
         initShader(sv);
+        initTexture(sv);
         loadParticleSystem();
     }
 
@@ -94,6 +100,7 @@ public class Explosion {
         u_start           = GLES20.glGetUniformLocation(mProgram, "u_start");
         u_centerX         = GLES20.glGetUniformLocation(mProgram, "u_centerX");
         u_centerY         = GLES20.glGetUniformLocation(mProgram, "u_centerY");
+
     }
 
     private void updateLifeCycle(){
@@ -106,10 +113,10 @@ public class Explosion {
     private void loadParticleSystem(){
         // Offset bounds
         start           = 0;
-        float oRadius   = 0.10f;      // 0.0 = circle; 1.0 = ring
+        float oRadius   = 0f;      // 0.0 = circle; 1.0 = ring
         float oVelocity = 0.50f;    // Speed
         float oDecay    = 1f;       // Time
-        float oSize     = 8.00f;        // Pixels
+        float oSize     = 2.00f;        // Pixels
         float oColor    = 0.25f;       // 0.5 = 50% shade offset
 
         float[] a_pIDs             = new float[NUM_PARTICLES];
@@ -210,7 +217,7 @@ public class Explosion {
              */
 
             this.bindVBO(this.a_pID, this.a_pIDIndex, 1);
-            this.bindVBO(this.a_pRadiusOffset, this.a_pVelocityOffsetIndex, 1);
+            this.bindVBO(this.a_pRadiusOffset, this.a_pRadiusOffsetIndex, 1);
             this.bindVBO(this.a_pVelocityOffset, this.a_pVelocityOffsetIndex, 1);
             this.bindVBO(this.a_pDecayOffset, this.a_pDecayOffsetIndex, 1);
             this.bindVBO(this.a_pSizeOffset, this.a_pSizeOffsetIndex, 1);
@@ -251,5 +258,32 @@ public class Explosion {
         float range = max - min;
 
         return rand.nextFloat() * range + min;
+    }
+
+    private void initTexture(SurfaceView sv){
+        this.textureIds = new int[1];
+        GLES20.glGenTextures(1, textureIds, 0);
+        Bitmap snow = BitmapFactory.decodeResource(sv.getResources(), R.drawable.snow);
+        bindTexture(0, snow);
+        snow.recycle();
+
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureIds[0]);
+    }
+
+    private void bindTexture(int pos, Bitmap bmp){
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureIds[pos]);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
+        GLUtils.texImage2D
+                (
+                        GLES20.GL_TEXTURE_2D,   //纹理类型
+                        0,                      //纹理层次，0代表直接贴图
+                        bmp,              //纹理图像
+                        0                      //纹理边框尺寸
+                );
     }
 }

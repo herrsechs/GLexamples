@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 import android.widget.ImageView;
 
 import opengl.glexamples.MainActivity;
@@ -17,6 +18,7 @@ public class StartupAnimationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
+        getSupportActionBar().hide();
         setContentView(R.layout.anim);
         image = (ImageView)findViewById(R.id.startup_animation_view);
 

@@ -11,6 +11,7 @@ void main(void)
     highp vec4 color = vec4(1.0);
     color.rgb = u_eColor + v_pColorOffset;
     color.rgb = clamp(color.rgb, vec3(0.0), vec3(1.0));
+
     // Required OpenGL ES 2.0 outputs
     gl_FragColor = color;
 }

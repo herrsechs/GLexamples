@@ -69,7 +69,7 @@ public class TextureRect
     public void initShader(SurfaceView mv)
     {
 
-        mVertexShader= ShaderUtil.loadFromAssetsFile("vertex_tex.sh", mv.getResources());
+        mVertexShader= ShaderUtil.loadFromAssetsFile("ver_tex.sh", mv.getResources());
 
         mFragmentShader=ShaderUtil.loadFromAssetsFile("frag_tex.sh", mv.getResources());  
 

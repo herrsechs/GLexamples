@@ -21,9 +21,6 @@ import opengl.glexamples.glUtil.ShaderUtil;
 
 import static opengl.glexamples.glUtil.ShaderUtil.createProgram;
 
-/**
- * Created by LLLLLyj on 2015/12/26.
- */
 public class PolarRose {
     //private Particle[] mParticles;
     private int PARTICLECOUNT = 360;

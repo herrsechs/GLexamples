@@ -5,6 +5,7 @@ uniform   float uTransX;
 uniform   float uTransY;
 uniform   float uTransZ;
 uniform   float uAngle;
+
 varying vec2 vTextureCoord;
 void main()     
 {

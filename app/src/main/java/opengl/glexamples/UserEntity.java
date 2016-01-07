@@ -7,17 +7,21 @@ import android.os.Parcelable;
  * Created by Angel on 15/12/26.
  */
 public class UserEntity implements Parcelable{
+    private String id;
     private String name;
     private String phone;
     private String email;
-    private String group;
+    private String category;
+    private String style;
 
     public UserEntity(){}
-    UserEntity(String name,String phone,String email,String group){
+    UserEntity(String id,String name,String phone,String email,String category,String style){
+        this.id=id;
         this.name=name;
         this.phone=phone;
         this.email=email;
-        this.group=group;
+        this.category=category;
+        this.style=style;
     }
 
     public String getName() {
@@ -44,14 +48,29 @@ public class UserEntity implements Parcelable{
         this.email = email;
     }
 
-    public String getGroup() {
-        return group;
+    public String getCategory() {
+        return category;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
 
     @Override
     public int describeContents() {
@@ -60,10 +79,12 @@ public class UserEntity implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeString(phone);
         dest.writeString(email);
-        dest.writeString(group);
+        dest.writeString(category);
+        dest.writeString(style);
     }
 
 
@@ -80,9 +101,11 @@ public class UserEntity implements Parcelable{
     };
 
     private UserEntity(Parcel in) {
+        id=in.readString();
         name = in.readString();
         phone=in.readString();
         email=in.readString();
-        group=in.readString();
+        category=in.readString();
+        style=in.readString();
     }
 }

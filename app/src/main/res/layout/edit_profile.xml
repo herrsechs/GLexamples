@@ -155,7 +155,7 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="25dp"
-            android:id="@+id/spinner_group"
+            android:id="@+id/spinner_category"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="64dp"
