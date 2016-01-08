@@ -22,6 +22,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.twotoasters.jazzylistview.JazzyListView;
+import com.twotoasters.jazzylistview.effects.FanEffect;
 
 import java.util.ArrayList;
 
@@ -35,8 +36,8 @@ import opengl.glexamples.adapter.ContactItemAdapter;
  */
 public class DisplayContactFragment extends Fragment {
     private View parentView;
-    // private JazzyListView jlistView;
-    private SwipeMenuListView listView;
+    private JazzyListView listView;
+    //private SwipeMenuListView listView;
     private EditText inquireContact;
     private ContactDAO contactdb;
     private String category;
@@ -44,7 +45,7 @@ public class DisplayContactFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.contact, container, false);
-        listView   = (SwipeMenuListView) parentView.findViewById(R.id.listView);
+        listView   = (JazzyListView) parentView.findViewById(R.id.listView);
         inquireContact= (EditText) parentView.findViewById(R.id.input_search_query);
         contactdb=new ContactDAO(this.getContext());
         category=getArguments().getString("category");
@@ -86,8 +87,9 @@ public class DisplayContactFragment extends Fragment {
 
 
         // set creator
-        listView.setMenuCreator(creator);
+        //listView.setMenuCreator(creator);
         listView.setAdapter(arrayAdapter);
+        listView.setTransitionEffect(new FanEffect());
         //listView.setTransitionEffect(new FanEffect());
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -104,38 +106,38 @@ public class DisplayContactFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-                        // edit
-                        // Get User which is selected
-                        String id=Integer.toString(position+1); //position starts from 0 while contact starts from 1
-                        UserEntity user=contactdb.getUserById(id);
-                        // Bind in intent
-                        Intent intent=new Intent();
-                        Bundle bundle=new Bundle();
-
-                        bundle.putParcelable("user",user);
-                        intent.putExtras(bundle);
-                        intent.setClass(getContext(), EditContactActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        // delete
-                        deleteUser(position);
-                        break;
-                }
-                // false : close the menu; true : not close the menu
-                return false;
-            }
-        });
-        // Right
-        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
-
-        // Left
-        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+//        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+//                switch (index) {
+//                    case 0:
+//                        // edit
+//                        // Get User which is selected
+//                        String id=Integer.toString(position+1); //position starts from 0 while contact starts from 1
+//                        UserEntity user=contactdb.getUserById(id);
+//                        // Bind in intent
+//                        Intent intent=new Intent();
+//                        Bundle bundle=new Bundle();
+//
+//                        bundle.putParcelable("user",user);
+//                        intent.putExtras(bundle);
+//                        intent.setClass(getContext(), EditContactActivity.class);
+//                        startActivity(intent);
+//                        break;
+//                    case 1:
+//                        // delete
+//                        deleteUser(position);
+//                        break;
+//                }
+//                // false : close the menu; true : not close the menu
+//                return false;
+//            }
+//        });
+//        // Right
+//        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
+//
+//        // Left
+//        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
 
         //Initial Search Bar
         inquireContact.addTextChangedListener(new TextWatcher() {

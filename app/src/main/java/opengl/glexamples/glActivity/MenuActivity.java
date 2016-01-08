@@ -50,7 +50,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         // attach to current activity;
         resideMenu = new ResideMenu(this);
         resideMenu.setUse3D(true);
-        resideMenu.setBackground(R.drawable.menu_background);
+        resideMenu.setBackground(R.drawable.webwxgetmsgimg);
         resideMenu.attachToActivity(this);
         resideMenu.setDirectionDisable(ResideMenu.DIRECTION_RIGHT);
         resideMenu.setDirectionDisable(ResideMenu.DIRECTION_LEFT);

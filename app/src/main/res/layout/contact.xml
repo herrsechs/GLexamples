@@ -50,14 +50,14 @@
         android:layout_below="@id/searchBarContainer"
         android:orientation="vertical">
 
-        <!--<com.twotoasters.jazzylistview.JazzyListView-->
-            <!--android:id="@+id/listView"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"/>-->
-        <com.baoyz.swipemenulistview.SwipeMenuListView
+        <com.twotoasters.jazzylistview.JazzyListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
+        <!--<com.baoyz.swipemenulistview.SwipeMenuListView-->
+            <!--android:id="@+id/listView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
 
 
     </LinearLayout>

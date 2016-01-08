@@ -39,6 +39,7 @@ public class EditContactActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.edit_profile);
         context=this;
         contactdb=new ContactDAO(this);
@@ -131,7 +132,7 @@ public class EditContactActivity extends AppCompatActivity {
 
         //Get category form Spinner
         categoryType=new String[]{"默认","同事","家人","同学"};
-        adapter=new ArrayAdapter(this,android.R.layout.simple_spinner_item,categoryType);
+        adapter=new ArrayAdapter(this,R.layout.myspinner, categoryType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         category.setAdapter(adapter);
         category.setVisibility(View.VISIBLE);//设置默认值

@@ -31,11 +31,13 @@ public class AddContactActivity extends AppCompatActivity {
     private UserEntity user;
     private Button done;
     private Button cancel;
+    private Button changeSkin;
     private ContactDAO contactdb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.edit_profile);
         context=this;
         user=new UserEntity();
@@ -76,6 +78,7 @@ public class AddContactActivity extends AppCompatActivity {
         category= (Spinner) findViewById(R.id.spinner_category);
         done= (Button) findViewById(R.id.button_done);
         cancel= (Button) findViewById(R.id.button_cancel);
+        changeSkin=(Button) findViewById(R.id.change_skin_button);
 
         //Get name from EditText
         name.addTextChangedListener(new TextWatcher() {
@@ -124,7 +127,7 @@ public class AddContactActivity extends AppCompatActivity {
 
         //Get group form Spinner
         categoryType=new String[]{"默认","同事","家人","同学"};
-        adapter=new ArrayAdapter(this,android.R.layout.simple_spinner_item,categoryType);
+        adapter=new ArrayAdapter(this,R.layout.myspinner, categoryType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         category.setAdapter(adapter);
         category.setVisibility(View.VISIBLE);//设置默认值
@@ -149,6 +152,13 @@ public class AddContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        changeSkin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddContactActivity.this, CurlActivity.class);
+                startActivity(intent);
             }
         });
     }
